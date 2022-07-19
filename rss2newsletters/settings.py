@@ -134,3 +134,5 @@ AUTH_USER_MODEL = 'feedaggregator.Subscriber'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 LOGIN_REDIRECT_URL = reverse_lazy('feedaggregator:add_feed')
+
+LOGIN_URL = reverse_lazy('feedaggregator:login')
