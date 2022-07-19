@@ -11,11 +11,5 @@ class FeedForm(forms.ModelForm):
 class NewSubscriberForm(UserCreationForm):
   class Meta:
     model = Subscriber
-    fields = ['email', 'first_name', 'second_name']
+    fields = ['email', 'first_name', 'second_name', 'password1', 'password2']
   
-  def save(self, commit=True):
-    subscriber = super(UserCreationForm, self).save(commit=False)
-    subscriber.email = self.cleaned_data['email']
-    if commit:
-      subscriber.save()
-    return subscriber

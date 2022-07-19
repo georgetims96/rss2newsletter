@@ -32,7 +32,7 @@ class Subscriber(AbstractBaseUser, PermissionsMixin):
   second_name = models.CharField(max_length=50, blank=False)
 # Trying to follow the existing Django flags
   is_staff = models.BooleanField(default=False)
-  is_active = models.BooleanField(default=False)
+  is_active = models.BooleanField(default=True)
   
   objects = SubscriberManager()
 
