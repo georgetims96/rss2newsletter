@@ -6,20 +6,27 @@ from feedaggregator.forms import FeedForm, NewSubscriberForm
 from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
+from feedaggregator.models import Feed
 
-from feedaggregator.models import Subscriber
 
 @method_decorator(login_required, name='dispatch')
 class FeedFormView(generic.CreateView):
   template_name = "feedaggregator/add.html"
   form_class = FeedForm
   # FIXME why is lazy necessary?
-  success_url = reverse_lazy('feedaggregator:add_feed')
+  success_url = reverse_lazy('feedaggregator:view_feeds')
   
   def get_context_data(self, **kwargs):
     context = super().get_context_data(**kwargs)
     context['user_first_name'] = self.request.user.first_name
     return context
+
+@method_decorator(login_required, name='dispatch')
+class FeedListView(generic.ListView):
+  template_name = "feedaggregator/list.html"
+  context_object_name = "feeds"
+  queryset = Feed.objects.all()
+  paginate_by = 10
 
 class RegisterCreateView(generic.CreateView):
   form_class = NewSubscriberForm

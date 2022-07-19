@@ -45,6 +45,6 @@ class Subscriber(AbstractBaseUser, PermissionsMixin):
 class Feed(models.Model):
   subscriptions = models.ManyToManyField(Subscriber)
   url = models.CharField(max_length=150, blank=False)
-  feed_encoding = models.CharField(max_length=150)
-  last_sent = models.DateTimeField(blank=True)
+  feed_encoding = models.CharField(max_length=150, blank=True, null=True)
+  last_sent = models.DateTimeField(blank=True, null=True)
 
