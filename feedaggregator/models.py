@@ -3,7 +3,6 @@ from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseU
 from django.utils.translation import gettext_lazy
 
 
-
 class SubscriberManager(BaseUserManager):
   def create_user(self, email, first_name, second_name, password, **others):
     if not email:
@@ -43,5 +42,9 @@ class Subscriber(AbstractBaseUser, PermissionsMixin):
   def __str__(self):
     return f"{self.first_name} {self.second_name}"
 
-
+class Feed(models.Model):
+  subscriptions = models.ManyToManyField(Subscriber)
+  url = models.CharField(max_length=150, blank=False)
+  feed_encoding = models.CharField(max_length=150)
+  last_sent = models.DateTimeField(blank=True)
 
