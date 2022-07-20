@@ -10,7 +10,7 @@ class FeedFormView(LoginRequiredMixin, generic.CreateView):
   form_class = FeedForm
   # FIXME why is lazy necessary?
   success_url = reverse_lazy('feedaggregator:view_feeds')
-  
+
   def get_context_data(self, **kwargs):
     context = super().get_context_data(**kwargs)
     context['user_first_name'] = self.request.user.first_name
