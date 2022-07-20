@@ -11,5 +11,4 @@ class FeedForm(forms.ModelForm):
 class NewSubscriberForm(UserCreationForm):
   class Meta:
     model = Subscriber
-    fields = ['email', 'first_name', 'second_name', 'password1', 'password2']
-  
+    fields = ['email', 'first_name', 'second_name', 'password1', 'password2'] 

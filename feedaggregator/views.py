@@ -2,15 +2,15 @@ from django.shortcuts import render
 from django.views import generic
 from django.contrib.auth import views as auth_views
 from django.contrib.auth import login, authenticate
+from django.contrib.auth.mixins import LoginRequiredMixin
 from feedaggregator.forms import FeedForm, NewSubscriberForm
 from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
 from feedaggregator.models import Feed
 
-
-@method_decorator(login_required, name='dispatch')
-class FeedFormView(generic.CreateView):
+# Why does LoginRequiredMixin have to go before CreateView?
+class FeedFormView(LoginRequiredMixin, generic.CreateView):
   template_name = "feedaggregator/add.html"
   form_class = FeedForm
   # FIXME why is lazy necessary?
