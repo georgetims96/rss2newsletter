@@ -1,4 +1,3 @@
-from tkinter import W
 from django.db import models
 from users.models import Subscriber
 import feedparser
@@ -16,9 +15,9 @@ class Feed(models.Model):
     return ""
 
   def save(self, *args, **kwargs):
+    # Only want to set title if new object
     if not self.pk:
       parsed_feed = feedparser.parse(self.url) 
-      print(parsed_feed)
       self.title = parsed_feed.feed.title
     super(Feed, self).save(*args, **kwargs)
   
