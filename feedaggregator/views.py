@@ -3,6 +3,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from feedaggregator.forms import FeedForm
 from django.urls import reverse_lazy
 from feedaggregator.models import Feed
+from users.models import Subscriber
 
 # Why does LoginRequiredMixin have to go before CreateView?
 class FeedFormView(LoginRequiredMixin, generic.CreateView):
@@ -22,8 +23,15 @@ class FeedDiscoverView(LoginRequiredMixin, generic.ListView):
   queryset = Feed.objects.all()
   paginate_by = 10
 
+class FeedSubscriptionView(LoginRequiredMixin, generic.ListView):
+  template_name = "feedaggregator/subscriptions.html"
+  context_object_name = "subscriptions"
+
+  def get_queryset(self):
+    return self.request.user.feed_set.all()
+
 class FeedSubscribeView(LoginRequiredMixin, generic.RedirectView):
-  url = reverse_lazy('feedaggregator:discover_feeds')
+  url = reverse_lazy('feedaggregator:view_feeds')
   query_string = False
 
   def get_redirect_url(self, *args, **kwargs):
