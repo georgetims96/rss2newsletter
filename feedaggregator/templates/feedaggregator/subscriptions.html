@@ -1,3 +1,4 @@
+{% if subscriptions %}
 <ul>
   {% for subscription in subscriptions %}
   <li>
@@ -5,3 +6,6 @@
   </li>
   {% endfor %}
 </ul>
+{% else %}
+You have no subscriptions. <a href="{% url 'feedaggregator:discover_feeds' %}">Discover some!</a>
+{% endif %}
