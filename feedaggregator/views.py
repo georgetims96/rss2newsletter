@@ -39,3 +39,13 @@ class FeedSubscribeView(LoginRequiredMixin, generic.RedirectView):
     if Feed.objects.get(pk=feed_pk):
       Feed.objects.get(pk=feed_pk).subscriptions.add(self.request.user)
     return super().get_redirect_url(*args, **kwargs)
+
+class FeedUnsubscribeView(LoginRequiredMixin, generic.RedirectView):
+  url = reverse_lazy('feedaggregator:view_feeds')
+  query_string = False
+
+  def get_redirect_url(self, *args, **kwargs):
+    feed_pk = kwargs.get("feed_pk", None)
+    if Feed.objects.get(pk=feed_pk):
+      Feed.objects.get(pk=feed_pk).subscriptions.remove(self.request.user)
+    return super().get_redirect_url(*args, **kwargs)

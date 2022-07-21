@@ -1,7 +1,7 @@
 <ul>
   {% for subscription in subscriptions %}
   <li>
-    {{ subscription }}
+    {{ subscription }} <a href="{% url 'feedaggregator:unsubscribe_feed' feed_pk=subscription.pk %}">-</a>
   </li>
   {% endfor %}
 </ul>

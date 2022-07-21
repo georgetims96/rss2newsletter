@@ -1,5 +1,7 @@
 <ul>
 {% for feed in feeds %}
-  <li>{{ feed }}</li>
+  <li>
+    {{ feed }} <a href="{% url 'feedaggregator:subscribe_feed' feed_pk=feed.pk %}">+</a>
+  </li>
 {% endfor %}
 </ul>
