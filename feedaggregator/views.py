@@ -21,7 +21,7 @@ class FeedDiscoverView(LoginRequiredMixin, generic.ListView):
   template_name = "feedaggregator/discover.html"
   context_object_name = "feeds"
   queryset = Feed.objects.all()
-  paginate_by = 10
+  paginate_by = 4
 
   def get_context_data(self, **kwargs):
     context = super(FeedDiscoverView, self).get_context_data(**kwargs)
