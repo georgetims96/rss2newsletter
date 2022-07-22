@@ -23,6 +23,11 @@ class FeedDiscoverView(LoginRequiredMixin, generic.ListView):
   queryset = Feed.objects.all()
   paginate_by = 10
 
+  def get_context_data(self, **kwargs):
+    context = super(FeedDiscoverView, self).get_context_data(**kwargs)
+    context["user_subscriptions"] = self.request.user.feed_set.all()
+    return context
+
 class FeedSubscriptionView(LoginRequiredMixin, generic.ListView):
   template_name = "feedaggregator/subscriptions.html"
   context_object_name = "subscriptions"

@@ -1,7 +1,12 @@
 <ul>
 {% for feed in feeds %}
   <li>
-    {{ feed }} <a href="{% url 'feedaggregator:subscribe_feed' feed_pk=feed.pk %}">+</a>
+    {{ feed }} 
+    {% if feed in user_subscriptions %}
+      <a href="{% url 'feedaggregator:unsubscribe_feed' feed_pk=feed.pk %}">-</a> 
+    {% else %}
+      <a href="{% url 'feedaggregator:subscribe_feed' feed_pk=feed.pk %}">+</a>
+    {% endif %}
   </li>
 {% endfor %}
 </ul>
