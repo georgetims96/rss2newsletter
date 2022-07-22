@@ -5,7 +5,7 @@ import feedparser
 class Feed(models.Model):
   subscriptions = models.ManyToManyField(Subscriber)
   title = models.CharField(max_length=150, blank=True, null=True)
-  url = models.URLField(max_length=150, blank=False, unique=True)
+  url = models.URLField(max_length=150, blank=False, unique=True, verbose_name="URL")
   feed_encoding = models.CharField(max_length=150, blank=True, null=True)
   last_sent = models.DateTimeField(blank=True, null=True)
 
