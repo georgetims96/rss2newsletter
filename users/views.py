@@ -12,11 +12,8 @@ class RegisterCreateView(generic.CreateView):
   def form_valid(self, form):
     valid = super().form_valid(form)
     email = form.cleaned_data.get('email')
-    print(email)
     password = form.cleaned_data.get('password1')
-    print(password)
     registered_user = authenticate(email=email, password=password)
-    print(registered_user)
     login(self.request, registered_user)
     return valid
 
