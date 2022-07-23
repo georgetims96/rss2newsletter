@@ -14,10 +14,18 @@ class Feed(models.Model):
       return self.title
     return ""
 
+  def send_email(self):
+    parsed_feed = feedparser.parse(self.url)
+    feed_entries = parsed_feed["entries"]    
+    for entry in feed_entries:
+      print(entry["content"][0]["value"])
+      print("-------------------")
+
   def save(self, *args, **kwargs):
     # Only want to set title if new object
     if not self.pk:
       parsed_feed = feedparser.parse(self.url) 
       self.title = parsed_feed.feed.title
+    self.send_email()
     super(Feed, self).save(*args, **kwargs)
   
