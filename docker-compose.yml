@@ -20,5 +20,18 @@ services:
       - POSTGRES_NAME=postgres
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
+      - CELERY_BROKE=redis://redis:6379/0
+      - CELERY_BACKEND=redis://redis:6379/0
     depends_on:
       - db
+      - redis
+  celery:
+    build: .
+    command: celery --app rss2newsletters worker
+    volumes:
+      - .:/src
+    depends_on:
+      - web
+      - redis
+  redis:
+    image: "redis:alpine"
