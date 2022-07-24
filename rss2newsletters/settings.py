@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'feedaggregator',
     'users',
+    'django_celery_beat',
 ]
 
 MIDDLEWARE = [
@@ -137,3 +138,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 LOGIN_REDIRECT_URL = reverse_lazy('feedaggregator:add_feed')
 
 LOGIN_URL = reverse_lazy('users:login')
+
+CELERY_BROKER_URL = os.environ.get("CELERY_BROKER", "redis://redis:6379/0")
+CELERY_RESULT_BACKED = os.environ.get("CELERY_BROKER", "redis://redis:6379/0")

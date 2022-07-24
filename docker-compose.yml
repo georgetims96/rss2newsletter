@@ -11,6 +11,7 @@ services:
       - POSTGRES_PASSWORD=postgres
   web:
     build: .
+    container_name: rss2newsletters_django
     command: python3 manage.py runserver 0.0.0.0:8000
     volumes:
       - .:/src 
@@ -27,7 +28,7 @@ services:
       - redis
   celery:
     build: .
-    command: celery --app rss2newsletters worker
+    command: celery -A rss2newsletters worker -l INFO
     volumes:
       - .:/src
     depends_on:
