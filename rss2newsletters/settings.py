@@ -141,3 +141,11 @@ LOGIN_URL = reverse_lazy('users:login')
 
 CELERY_BROKER_URL = os.environ.get("CELERY_BROKER", "redis://redis:6379/0")
 CELERY_RESULT_BACKED = os.environ.get("CELERY_BROKER", "redis://redis:6379/0")
+
+CELERY_BEAT_SCHEDULE = {
+  "scheduled_task": {
+    "task": "feedaggregator.tasks.send_feeds",
+    "schedule": 30.0,
+    "args": (),
+  }
+}

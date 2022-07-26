@@ -21,14 +21,26 @@ services:
       - POSTGRES_NAME=postgres
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
-      - CELERY_BROKE=redis://redis:6379/0
+      - CELERY_BROKER=redis://redis:6379/0
       - CELERY_BACKEND=redis://redis:6379/0
     depends_on:
       - db
       - redis
   celery:
     build: .
-    command: celery -A rss2newsletters worker -l INFO
+    command: celery -A rss2newsletters worker -l INFO --pool=solo 
+    volumes:
+      - .:/src
+    environment:
+      - POSTGRES_NAME=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    depends_on:
+      - web
+      - redis
+  celery-beat:
+    build: .
+    command: celery -A rss2newsletters beat -l INFO
     volumes:
       - .:/src
     depends_on:
