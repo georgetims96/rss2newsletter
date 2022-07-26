@@ -13,14 +13,20 @@ class Feed(models.Model):
     if self.title:
       return self.title
     return ""
-
+  
   def send_email(self):
+    # TODO move to newsletter_emailer app
     parsed_feed = feedparser.parse(self.url)
     feed_entries = parsed_feed["entries"]    
     for entry in feed_entries:
       print(entry["content"][0]["value"])
       print("-------------------")
 
+  def filter_entries(self, entries_since):
+    '''
+    Return all of the feed's entries since specified date
+    '''
+    pass
   def save(self, *args, **kwargs):
     # Only want to set title if new object
     if not self.pk:
