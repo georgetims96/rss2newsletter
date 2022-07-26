@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'feedaggregator',
     'users',
+    'newsletter_emailer',
     'django_celery_beat',
 ]
 
@@ -144,7 +145,7 @@ CELERY_RESULT_BACKED = os.environ.get("CELERY_BROKER", "redis://redis:6379/0")
 
 CELERY_BEAT_SCHEDULE = {
   "scheduled_task": {
-    "task": "feedaggregator.tasks.send_feeds",
+    "task": "newsletter_emailer.tasks.send_feeds",
     "schedule": 30.0,
     "args": (),
   }

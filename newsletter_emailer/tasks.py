@@ -1,7 +1,6 @@
 from __future__ import unicode_literals
 from __future__ import absolute_import, unicode_literals
 
-from django.db import connection
 from celery import shared_task
 
 from feedaggregator.models import Feed
