@@ -2,8 +2,9 @@ from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin
 from feedaggregator.forms import FeedForm
 from django.urls import reverse_lazy
-from feedaggregator.models import Feed
+from feedaggregator.models import Feed, Subscription
 from users.models import Subscriber
+from datetime import datetime, timezone
 
 # Why does LoginRequiredMixin have to go before CreateView?
 class FeedFormView(LoginRequiredMixin, generic.CreateView):
@@ -25,7 +26,7 @@ class FeedDiscoverView(LoginRequiredMixin, generic.ListView):
 
   def get_context_data(self, **kwargs):
     context = super(FeedDiscoverView, self).get_context_data(**kwargs)
-    context["user_subscriptions"] = self.request.user.feed_set.all()
+    context["user_subscriptions"] = self.request.user.subscriptions.all()
     return context
 
 class FeedSubscriptionView(LoginRequiredMixin, generic.ListView):
@@ -33,14 +34,18 @@ class FeedSubscriptionView(LoginRequiredMixin, generic.ListView):
   context_object_name = "subscriptions"
 
   def get_queryset(self):
-    return self.request.user.feed_set.all()
+    return self.request.user.subscriptions.all()
 
 class FeedSubscribeView(LoginRequiredMixin, generic.RedirectView):
 
   def get_redirect_url(self, *args, **kwargs):
     feed_pk = kwargs.get("feed_pk", None)
     if Feed.objects.get(pk=feed_pk):
-      Feed.objects.get(pk=feed_pk).subscriptions.add(self.request.user)
+      Subscription.objects.create(
+        user=self.request.user,
+        feed=Feed.objects.get(pk=feed_pk),
+        date_subscribed=datetime.now(timezone.utc)
+      )
     return self.request.META.get('HTTP_REFERER')
 
 class FeedUnsubscribeView(LoginRequiredMixin, generic.RedirectView):
@@ -48,5 +53,9 @@ class FeedUnsubscribeView(LoginRequiredMixin, generic.RedirectView):
   def get_redirect_url(self, *args, **kwargs):
     feed_pk = kwargs.get("feed_pk", None)
     if Feed.objects.get(pk=feed_pk):
-      Feed.objects.get(pk=feed_pk).subscriptions.remove(self.request.user)
+      subscription_to_remove = Subscription.objects.get(
+        user=self.request.user,
+        feed__pk=feed_pk
+      )
+      subscription_to_remove.delete()
     return self.request.META.get('HTTP_REFERER')

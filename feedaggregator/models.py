@@ -2,12 +2,15 @@ from django.db import models
 from users.models import Subscriber
 import feedparser
 
+
+
 class Feed(models.Model):
   subscriptions = models.ManyToManyField(Subscriber)
   title = models.CharField(max_length=150, blank=True, null=True)
   url = models.URLField(max_length=150, blank=False, unique=True, verbose_name="URL")
   feed_encoding = models.CharField(max_length=150, blank=True, null=True)
   last_sent = models.DateTimeField(blank=True, null=True)
+  subscribers = models.ManyToManyField(Subscriber, through='Subscription', related_name="subscriptions")
 
   def __str__(self):
     if self.title:
@@ -38,3 +41,8 @@ class Feed(models.Model):
     self.send_email()
     super(Feed, self).save(*args, **kwargs)
   
+class Subscription(models.Model):
+  user = models.ForeignKey(Subscriber, on_delete=models.CASCADE)
+  feed = models.ForeignKey(Feed, on_delete=models.CASCADE)
+  date_subscribed = models.DateTimeField()
+
