@@ -10,9 +10,8 @@ def send_feeds():
   feeds = Feed.objects.all()
   feed_emails = []
   for feed in feeds:
-    try:
-      feed.send_email()
-      feed_emails.append(feed)
-    except:
-      print(f"{feed.title} FAILED TO SEND")
+    print(feed)
+    feed.send_email()
+    print("DONE")
+    feed_emails.append(feed)
   return feed_emails

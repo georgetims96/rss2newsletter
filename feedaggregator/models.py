@@ -17,10 +17,13 @@ class Feed(models.Model):
   def send_email(self):
     # TODO move to newsletter_emailer app
     parsed_feed = feedparser.parse(self.url)
-    feed_entries = parsed_feed["entries"]    
+    feed_entries = parsed_feed["entries"]
     for entry in feed_entries:
-      print(entry["content"][0]["value"])
-      print("-------------------")
+      try:
+        x = entry["content"][0]["value"]
+        # print("-------------------")
+      except:
+        print(list(entry.keys()))
 
   def filter_entries(self, entries_since):
     '''
