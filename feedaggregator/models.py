@@ -18,17 +18,17 @@ class Feed(models.Model):
     return ""
   
   def send_email(self):
-    # TODO move to newsletter_emailer app
+    # TODO create Mail object and add to newsletter_emailer
+    # Only send emails for comprehensive feeds
     if not self.abbreviated:
+      # Parse the relevant feed
       parsed_feed = feedparser.parse(self.url)
+      # Get the parsed feeds' entries
       feed_entries = parsed_feed["entries"]
+      # Loop over parsed feeds' entries
       for entry in feed_entries:
-        try:
-          # print(entry["content"][0]["value"])
-          print(len(entry["content"]))
-          # print("-------------------")
-        except:
-          print(list(entry.keys()))
+        print(entry["content"][0]["value"])
+        # print("-------------------")
 
   def filter_entries(self, entries_since):
     '''
@@ -38,11 +38,14 @@ class Feed(models.Model):
   def save(self, *args, **kwargs):
     # Only want to set title if new object
     if not self.pk:
+      # Get the feed's title and check if it's a comprehensive feed
+      # i.e. it's not just summaries of articles
       parsed_feed = feedparser.parse(self.url) 
       self.title = parsed_feed.feed.title
       if "entries" in parsed_feed and "content" in parsed_feed["entries"][0]:
         self.abbreviated = False
 
+    # FIXME remove
     self.send_email()
     super(Feed, self).save(*args, **kwargs)
   
