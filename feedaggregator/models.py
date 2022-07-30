@@ -53,7 +53,9 @@ class Feed(models.Model):
         elif "summary" in parsed_feed["entries"][0]:
           self.content_key = "summary"
 
-    # Check if entries are sorted normally
+      # Check if entries are sorted normally
+      
+
     # FIXME remove
     self.send_email()
     super(Feed, self).save(*args, **kwargs)
