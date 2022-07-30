@@ -8,10 +8,6 @@ from feedaggregator.models import Feed
 @shared_task
 def send_feeds():
   feeds = Feed.objects.all()
-  feed_emails = []
   for feed in feeds:
-    print(feed)
     feed.send_email()
     print("DONE")
-    feed_emails.append(feed)
-  return feed_emails
