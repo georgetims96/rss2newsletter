@@ -3,7 +3,6 @@ from users.models import Subscriber
 import feedparser
 
 
-
 class Feed(models.Model):
   subscriptions = models.ManyToManyField(Subscriber)
   title = models.CharField(max_length=150, blank=True, null=True)
@@ -23,7 +22,7 @@ class Feed(models.Model):
     feed_entries = parsed_feed["entries"]
     for entry in feed_entries:
       try:
-        x = entry["content"][0]["value"]
+        print(entry["content"][0]["value"])
         # print("-------------------")
       except:
         print(list(entry.keys()))
