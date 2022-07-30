@@ -10,7 +10,7 @@ class Feed(models.Model):
   feed_encoding = models.CharField(max_length=150, blank=True, null=True)
   last_sent = models.DateTimeField(blank=True, null=True)
   subscribers = models.ManyToManyField(Subscriber, through='Subscription', related_name="subscriptions")
-  abbreviated = models.BooleanField(default=True)
+  content_key = models.CharField(max_length=25, default="invalid")
 
   def __str__(self):
     if self.title:
@@ -19,16 +19,18 @@ class Feed(models.Model):
   
   def send_email(self):
     # TODO create Mail object and add to newsletter_emailer
-    # Only send emails for comprehensive feeds
-    if not self.abbreviated:
-      # Parse the relevant feed
-      parsed_feed = feedparser.parse(self.url)
-      # Get the parsed feeds' entries
-      feed_entries = parsed_feed["entries"]
-      # Loop over parsed feeds' entries
-      for entry in feed_entries:
+    # Parse the relevant feed
+    parsed_feed = feedparser.parse(self.url)
+    # Get the parsed feeds' entries
+    feed_entries = parsed_feed["entries"]
+    # Loop over parsed feeds' entries
+    for entry in feed_entries:
+      if self.content_key == "content":
         print(entry["content"][0]["value"])
-        # print("-------------------")
+      elif self.content_key == "summary":
+        print("here")
+        print(entry["summary"])
+      # print("-------------------")
 
   def filter_entries(self, entries_since):
     '''
@@ -42,8 +44,11 @@ class Feed(models.Model):
       # i.e. it's not just summaries of articles
       parsed_feed = feedparser.parse(self.url) 
       self.title = parsed_feed.feed.title
-      if "entries" in parsed_feed and "content" in parsed_feed["entries"][0]:
-        self.abbreviated = False
+      if "entries" in parsed_feed and len(parsed_feed["entries"]) > 0:
+        if "content" in parsed_feed["entries"][0]:
+          self.content_key = "content"
+        elif "summary" in parsed_feed["entries"][0]:
+          self.content_key = "summary"
 
     # FIXME remove
     self.send_email()
