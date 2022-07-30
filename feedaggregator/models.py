@@ -11,6 +11,8 @@ class Feed(models.Model):
   last_sent = models.DateTimeField(blank=True, null=True)
   subscribers = models.ManyToManyField(Subscriber, through='Subscription', related_name="subscriptions")
   content_key = models.CharField(max_length=25, default="invalid")
+  # Checks if RSS entries are sorted most recent first (i.e. True)
+  sorted_normal = models.BooleanField(default=True)
 
   def __str__(self):
     if self.title:
@@ -36,11 +38,12 @@ class Feed(models.Model):
     '''
     Return all of the feed's entries since specified date
     '''
-    pass
+    parsed_feed = feedparser.parse(self.url)
+
   def save(self, *args, **kwargs):
     # Only want to set title if new object
     if not self.pk:
-      # Get the feed's title and check if it's a comprehensive feed
+      # Get the feed's title and check its structure
       # i.e. it's not just summaries of articles
       parsed_feed = feedparser.parse(self.url) 
       self.title = parsed_feed.feed.title
@@ -50,6 +53,7 @@ class Feed(models.Model):
         elif "summary" in parsed_feed["entries"][0]:
           self.content_key = "summary"
 
+    # Check if entries are sorted normally
     # FIXME remove
     self.send_email()
     super(Feed, self).save(*args, **kwargs)
