@@ -10,6 +10,7 @@ class Feed(models.Model):
   feed_encoding = models.CharField(max_length=150, blank=True, null=True)
   last_sent = models.DateTimeField(blank=True, null=True)
   subscribers = models.ManyToManyField(Subscriber, through='Subscription', related_name="subscriptions")
+  abbreviated = models.BooleanField(default=True)
 
   def __str__(self):
     if self.title:
@@ -18,14 +19,16 @@ class Feed(models.Model):
   
   def send_email(self):
     # TODO move to newsletter_emailer app
-    parsed_feed = feedparser.parse(self.url)
-    feed_entries = parsed_feed["entries"]
-    for entry in feed_entries:
-      try:
-        print(entry["content"][0]["value"])
-        # print("-------------------")
-      except:
-        print(list(entry.keys()))
+    if not self.abbreviated:
+      parsed_feed = feedparser.parse(self.url)
+      feed_entries = parsed_feed["entries"]
+      for entry in feed_entries:
+        try:
+          # print(entry["content"][0]["value"])
+          print(len(entry["content"]))
+          # print("-------------------")
+        except:
+          print(list(entry.keys()))
 
   def filter_entries(self, entries_since):
     '''
@@ -37,6 +40,9 @@ class Feed(models.Model):
     if not self.pk:
       parsed_feed = feedparser.parse(self.url) 
       self.title = parsed_feed.feed.title
+      if "entries" in parsed_feed and "content" in parsed_feed["entries"][0]:
+        self.abbreviated = False
+
     self.send_email()
     super(Feed, self).save(*args, **kwargs)
   
