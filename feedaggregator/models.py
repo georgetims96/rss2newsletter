@@ -48,7 +48,7 @@ class Feed(models.Model):
     # Only want to set title if new object
     if not self.pk:
       # Get the feed's title and check its structure
-      # i.e. it's not just summaries of articles
+      # Some have article body text in "content" tag; other's in "description"/"summary"
       parsed_feed = feedparser.parse(self.url) 
       self.title = parsed_feed.feed.title
       if "entries" in parsed_feed and len(parsed_feed["entries"]) > 0:
