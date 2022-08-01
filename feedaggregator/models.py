@@ -1,7 +1,8 @@
 from django.db import models
 from users.models import Subscriber
 import feedparser
-
+from datetime import datetime
+from time import mktime
 
 class Feed(models.Model):
   subscriptions = models.ManyToManyField(Subscriber)
@@ -39,6 +40,9 @@ class Feed(models.Model):
     Return all of the feed's entries since specified date
     '''
     parsed_feed = feedparser.parse(self.url)
+  
+  def st_to_dt(self, st):
+    return datetime.fromtimestamp(mktime(st))
 
   def save(self, *args, **kwargs):
     # Only want to set title if new object
@@ -52,8 +56,12 @@ class Feed(models.Model):
           self.content_key = "content"
         elif "summary" in parsed_feed["entries"][0]:
           self.content_key = "summary"
-
-      # Check if entries are sorted normally
+        # Check if entries are sorted normally
+        first_entry_date = self.st_to_dt(parsed_feed["entries"][0]["published_parsed"])
+        second_entry_date = self.st_to_dt(parsed_feed["entries"][1]["published_parsed"])
+        if first_entry_date < second_entry_date:
+          # If they aren't mark it as such
+          self.sorted_normal = False
       
 
     # FIXME remove
