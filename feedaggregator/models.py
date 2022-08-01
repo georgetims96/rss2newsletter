@@ -1,3 +1,4 @@
+from ast import parse
 from django.db import models
 from users.models import Subscriber
 import feedparser
@@ -35,12 +36,32 @@ class Feed(models.Model):
         print(entry["summary"])
       # print("-------------------")
 
-  def filter_entries(self, entries_since):
+  def filter_entries(self, entries_since_date):
     '''
     Return all of the feed's entries since specified date
+
+    :param entries_since_date: datetime object that represents the cutoff date for entries
+    
+    :return: list of entries published since specified date
     '''
     parsed_feed = feedparser.parse(self.url)
-  
+    num_entries = len(parsed_feed["entries"])
+    # Case where entries are sorted normally
+    if self.sorted_normal:
+      # Tracker variable
+      idx = num_entries - 1
+      # Keep decrementing tracker variable until we find an entry before the cutoff date
+      while self.st_to_dt(parsed_feed["entries"][idx]["published_parsed"]) >= entries_since_date and idx >= 0:
+        idx -= 1
+      # Return relevant slice of entries
+      return parsed_feed["entries"][(idx + 1):]
+    # Case where entries are sorted oldest first
+    else:
+      # TODO write
+
+    
+
+
   def st_to_dt(self, st):
     return datetime.fromtimestamp(mktime(st))
 
@@ -60,7 +81,7 @@ class Feed(models.Model):
         first_entry_date = self.st_to_dt(parsed_feed["entries"][0]["published_parsed"])
         second_entry_date = self.st_to_dt(parsed_feed["entries"][1]["published_parsed"])
         if first_entry_date < second_entry_date:
-          # If they aren't mark it as such
+          # If they aren't mark the feed as such
           self.sorted_normal = False
       
 
