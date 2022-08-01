@@ -57,10 +57,10 @@ class Feed(models.Model):
       return parsed_feed["entries"][(idx + 1):]
     # Case where entries are sorted oldest first
     else:
-      # TODO write
-
-    
-
+      idx = 0
+      while self.st_to_dt(parsed_feed["entries"][idx]["published_parsed"]) < entries_since_date and idx < num_entries:
+        idx += 1
+      return parsed_feed["entries"][idx:]
 
   def st_to_dt(self, st):
     return datetime.fromtimestamp(mktime(st))
