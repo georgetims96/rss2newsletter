@@ -1,3 +1,4 @@
 .DS_Store
 data/
 *.swp
+rss2newsletters/secret_settings.py
