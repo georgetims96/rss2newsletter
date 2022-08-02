@@ -4,6 +4,7 @@ from users.models import Subscriber
 import feedparser
 from datetime import datetime
 from time import mktime
+import feedaggregator.utils as utils
 
 class Feed(models.Model):
   subscriptions = models.ManyToManyField(Subscriber)
@@ -62,9 +63,6 @@ class Feed(models.Model):
         idx += 1
       return parsed_feed["entries"][idx:]
 
-  def st_to_dt(self, st):
-    return datetime.fromtimestamp(mktime(st))
-
   def save(self, *args, **kwargs):
     # Only want to set title if new object
     if not self.pk:
@@ -78,15 +76,15 @@ class Feed(models.Model):
         elif "summary" in parsed_feed["entries"][0]:
           self.content_key = "summary"
         # Check if entries are sorted normally
-        first_entry_date = self.st_to_dt(parsed_feed["entries"][0]["published_parsed"])
-        second_entry_date = self.st_to_dt(parsed_feed["entries"][1]["published_parsed"])
+        first_entry_date = utils.st_to_dt(parsed_feed["entries"][0]["published_parsed"])
+        second_entry_date = utils.st_to_dt(parsed_feed["entries"][1]["published_parsed"])
         if first_entry_date < second_entry_date:
           # If they aren't mark the feed as such
           self.sorted_normal = False
       
 
     # FIXME remove
-    self.send_email()
+    # self.send_email()
     super(Feed, self).save(*args, **kwargs)
   
 class Subscription(models.Model):
