@@ -81,10 +81,6 @@ class Feed(models.Model):
         if first_entry_date < second_entry_date:
           # If they aren't mark the feed as such
           self.sorted_normal = False
-      
-
-    # FIXME remove
-    # self.send_email()
     super(Feed, self).save(*args, **kwargs)
   
 class Subscription(models.Model):

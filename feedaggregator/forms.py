@@ -7,6 +7,9 @@ class FeedForm(forms.ModelForm):
   class Meta:
     model = Feed 
     fields = ['url']
+    widgets = {
+      'url': forms.TextInput,
+    }
   
   def clean_url(self):
     '''
