@@ -1,8 +1,6 @@
+{% extends 'feedaggregator/base.html' %}
 {% load crispy_forms_tags %}
-<head>
-  <title>Add a Feed</title>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-</head>
+{% block content %}
 <h1>Hello, {{ user_first_name }}</h1>
 <div class="card">
   <div class="card-body">
@@ -16,3 +14,4 @@
     </div>
   </div>
 </div>
+{% endblock %}
