@@ -1,16 +1,18 @@
-<head>
-  <title>Discover Feeds</title>
-</head>
+{% extends 'feedaggregator/base.html' %}
+{% block title %}Discover Feed{% endblock %}
+{% block content %}
 {% if feeds%}
-<ul>
+<h1>Discover</h1>
+<ul class="list-group">
   {% for feed in feeds %}
-  <li>
+  <li class="list-group-item d-flex justify-content-between align-items-center">
     {{ feed }} 
     {% if feed in user_subscriptions %}
-      <a href="{% url 'feedaggregator:unsubscribe_feed' feed_pk=feed.pk %}">-</a> 
+      <a href="{% url 'feedaggregator:unsubscribe_feed' feed_pk=feed.pk %}" class="badge badge-primary badge-pill">-</a> 
     {% else %}
-      <a href="{% url 'feedaggregator:subscribe_feed' feed_pk=feed.pk %}">+</a>
+      <a href="{% url 'feedaggregator:subscribe_feed' feed_pk=feed.pk %}" class="badge badge-primary badge-pill">+</a>
     {% endif %}
+    </span>
   </li>
   {% endfor %}
 </ul>
@@ -33,3 +35,4 @@
 {% else %}
 <h1>No feeds to discover yet!</h1>
 {% endif %}
+{% endblock %}
