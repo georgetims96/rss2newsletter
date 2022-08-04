@@ -19,19 +19,19 @@
 
 <!-- Pagination controls -->
 
-<div class="pagination">
-  <span class="page-links">
+<nav aria-label="discover navigation"></nav>
+  <ul class="pagination">
       {% if page_obj.has_previous %}
-          <a href="?page={{ page_obj.previous_page_number }}"> &lt;-</a>
+         <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a></li>
       {% endif %}
-      <span class="page-current">
+      <li class="page-item">
           Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
-      </span>
+      </li>
       {% if page_obj.has_next %}
-          <a href="?page={{ page_obj.next_page_number }}"> -&gt;</a>
+          <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a></li>
       {% endif %}
-  </span>
-</div>
+    </ul>
+</nav>
 {% else %}
 <h1>No feeds to discover yet!</h1>
 {% endif %}
