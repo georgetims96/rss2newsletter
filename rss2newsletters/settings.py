@@ -160,3 +160,5 @@ CELERY_BEAT_SCHEDULE = {
     "args": (),
   }
 }
+
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
