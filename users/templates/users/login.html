@@ -1,9 +1,11 @@
-<head>
-  <title>Login</title>
-</head>
+{% extends 'users/base.html' %}
+{% block title %}Login{% endblock %}
+{% load crispy_forms_tags %}
+{% block content %}
 <h1>Login</h1>
 <form method="POST">
   {% csrf_token %}
-  {{ form.as_p }}
+  {{ form|crispy }}
   <input type="submit" value="Login">
 </form>
+{% endblock %}
