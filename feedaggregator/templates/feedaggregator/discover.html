@@ -2,7 +2,10 @@
 {% block title %}Discover Feeds{% endblock %}
 {% block content %}
 {% if feeds%}
-<h1>Discover</h1>
+<div class="row">
+  <h1>Discover</h1>
+</div>
+<div class="row">
 <ul class="list-group">
   {% for feed in feeds %}
   <li class="list-group-item d-flex justify-content-between align-items-center">
@@ -16,8 +19,8 @@
   </li>
   {% endfor %}
 </ul>
-
-
+</div>
+<div class="row">
 <nav aria-label="discover navigation"></nav>
   <ul class="pagination">
       {% if page_obj.has_previous %}
@@ -35,6 +38,7 @@
       {% endif %}
     </ul>
 </nav>
+</div>
 {% else %}
 <h1>No feeds to discover yet!</h1>
 {% endif %}

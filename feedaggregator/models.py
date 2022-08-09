@@ -37,6 +37,9 @@ class Feed(models.Model):
         print(entry["summary"])
       # print("-------------------")
 
+  def st_to_dt(self, st):
+    return datetime.fromtimestamp(mktime(st))
+
   def filter_entries(self, entries_since_date):
     '''
     Return all of the feed's entries since specified date
@@ -44,6 +47,11 @@ class Feed(models.Model):
     :param entries_since_date: datetime object that represents the cutoff date for entries
     
     :return: list of entries published since specified date
+    '''
+    parsed_feed = feedparser.parse(self.url)
+    return [x for x in parsed_feed['entries'] \
+      if self.st_to_dt(x['published_parsed']) > entries_since_date]
+
     '''
     parsed_feed = feedparser.parse(self.url)
     num_entries = len(parsed_feed["entries"])
@@ -62,6 +70,7 @@ class Feed(models.Model):
       while self.st_to_dt(parsed_feed["entries"][idx]["published_parsed"]) < entries_since_date and idx < num_entries:
         idx += 1
       return parsed_feed["entries"][idx:]
+    '''
 
   def save(self, *args, **kwargs):
     # Only want to set title if new object
