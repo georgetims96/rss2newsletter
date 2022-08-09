@@ -3,9 +3,12 @@
 {% block content %}
 {% if feeds%}
 <div class="row">
-  <h1>Discover</h1>
+  <div class="col">
+    <h1>Discover</h1>
+  </div>
 </div>
 <div class="row">
+<div class="col">
 <ul class="list-group">
   {% for feed in feeds %}
   <li class="list-group-item d-flex justify-content-between align-items-center">
@@ -20,9 +23,11 @@
   {% endfor %}
 </ul>
 </div>
-<div class="row">
-<nav aria-label="discover navigation"></nav>
-  <ul class="pagination">
+</div>
+<div class="row justify-content-center">
+<div class="col">
+<nav aria-label="discover navigation">
+  <ul class="pagination justify-content-center">
       {% if page_obj.has_previous %}
          <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a></li>
       {% else %}
@@ -38,6 +43,7 @@
       {% endif %}
     </ul>
 </nav>
+</div>
 </div>
 {% else %}
 <h1>No feeds to discover yet!</h1>
