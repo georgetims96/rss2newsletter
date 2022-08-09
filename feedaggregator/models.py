@@ -52,25 +52,6 @@ class Feed(models.Model):
     return [x for x in parsed_feed['entries'] \
       if self.st_to_dt(x['published_parsed']) > entries_since_date]
 
-    '''
-    parsed_feed = feedparser.parse(self.url)
-    num_entries = len(parsed_feed["entries"])
-    # Case where entries are sorted normally
-    if self.sorted_normal:
-      # Tracker variable
-      idx = num_entries - 1
-      # Keep decrementing tracker variable until we find an entry before the cutoff date
-      while self.st_to_dt(parsed_feed["entries"][idx]["published_parsed"]) >= entries_since_date and idx >= 0:
-        idx -= 1
-      # Return relevant slice of entries
-      return parsed_feed["entries"][(idx + 1):]
-    # Case where entries are sorted oldest first
-    else:
-      idx = 0
-      while self.st_to_dt(parsed_feed["entries"][idx]["published_parsed"]) < entries_since_date and idx < num_entries:
-        idx += 1
-      return parsed_feed["entries"][idx:]
-    '''
 
   def save(self, *args, **kwargs):
     # Only want to set title if new object
@@ -96,4 +77,7 @@ class Subscription(models.Model):
   user = models.ForeignKey(Subscriber, on_delete=models.CASCADE)
   feed = models.ForeignKey(Feed, on_delete=models.CASCADE)
   date_subscribed = models.DateTimeField()
+
+  class Meta:
+    ordering = ['date_subscribed']
 
