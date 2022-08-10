@@ -4,6 +4,7 @@ from users.models import Subscriber
 import feedparser
 from datetime import datetime
 from time import mktime
+import pytz
 import feedaggregator.utils as utils
 
 class Feed(models.Model):
