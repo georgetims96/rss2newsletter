@@ -34,7 +34,7 @@ class FeedSubscriptionView(LoginRequiredMixin, generic.ListView):
   context_object_name = "subscriptions"
 
   def get_queryset(self):
-    return self.request.user.subscriptions.all()
+    return Subscription.objects.filter(user=self.request.user)
 
 class FeedSubscribeView(LoginRequiredMixin, generic.RedirectView):
 

@@ -79,6 +79,9 @@ class Subscription(models.Model):
   feed = models.ForeignKey(Feed, on_delete=models.CASCADE)
   date_subscribed = models.DateTimeField()
 
+  def __str__(self):
+    return self.feed.title
+
   class Meta:
     ordering = ['date_subscribed']
 
