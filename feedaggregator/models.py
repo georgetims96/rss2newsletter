@@ -44,7 +44,7 @@ class Feed(models.Model):
         new_entry.body = raw_entry["summary"]
         new_entry.title = raw_entry["title"]
         # print(entry["summary"])
-      new_entry.save()
+      return new_entry
 
   def st_to_dt(self, st):
     return datetime.fromtimestamp(mktime(st))

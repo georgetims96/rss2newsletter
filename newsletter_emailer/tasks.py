@@ -15,6 +15,10 @@ def send_feeds():
     # TODO datetiime not timezone aware
     feed_entries = feed.filter_entries(datetime.now() - timedelta(days=7))
     for entry in feed_entries:
-      feed.generate_entry(entry)
+      try:
+        new_entry = feed.generate_entry(entry)
+        new_entry.save()
+      except(e):
+        print(e)
     feed.last_sent = datetime.now()
     feed.save()
