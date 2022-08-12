@@ -5,6 +5,7 @@ from celery import shared_task
 from datetime import datetime
 from feedaggregator.models import Feed
 from datetime import datetime, timezone, timedelta
+
 @shared_task
 def send_feeds():
   feeds = Feed.objects.all()
@@ -18,7 +19,7 @@ def send_feeds():
       try:
         new_entry = feed.generate_entry(entry)
         new_entry.save()
-      except(e):
+      except Exception as e:
         print(e)
     feed.last_sent = datetime.now()
     feed.save()
