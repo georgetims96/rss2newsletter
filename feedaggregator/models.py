@@ -39,8 +39,6 @@ class Feed(models.Model):
         new_entry.save()
         # print(entry["content"][0]["value"])
       elif self.content_key == "summary":
-        print("here")
-        print(f"Summary Keys{entry.keys()}")
         new_entry.body = raw_entry["summary"]
         new_entry.title = raw_entry["title"]
         # print(entry["summary"])
