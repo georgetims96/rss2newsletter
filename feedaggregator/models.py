@@ -4,8 +4,6 @@ from users.models import Subscriber
 import feedparser
 from datetime import datetime
 from time import mktime
-import pytz
-import feedaggregator.utils as utils
 
 class Feed(models.Model):
   subscriptions = models.ManyToManyField(Subscriber)
@@ -23,7 +21,7 @@ class Feed(models.Model):
       return self.title
     return ""
   
-  def send_email(self):
+  def generate_entry(self, raw_entry):
     # TODO create Mail object and add to newsletter_emailer
     # Parse the relevant feed
     parsed_feed = feedparser.parse(self.url)
@@ -31,12 +29,22 @@ class Feed(models.Model):
     feed_entries = parsed_feed["entries"]
     # Loop over parsed feeds' entries
     for entry in feed_entries:
+      new_entry = Entry(
+        feed=self,
+      )
       if self.content_key == "content":
-        print(entry["content"][0]["value"])
+        # print(entry["content"][0].keys)
+        new_entry.body = raw_entry["content"][0]["value"]
+        new_entry.title = raw_entry["content"][0]["title"]
+        new_entry.save()
+        # print(entry["content"][0]["value"])
       elif self.content_key == "summary":
         print("here")
-        print(entry["summary"])
-      # print("-------------------")
+        print(f"Summary Keys{entry.keys()}")
+        new_entry.body = raw_entry["summary"]
+        new_entry.title = raw_entry["title"]
+        # print(entry["summary"])
+      new_entry.save()
 
   def st_to_dt(self, st):
     return datetime.fromtimestamp(mktime(st))
@@ -67,8 +75,8 @@ class Feed(models.Model):
         elif "summary" in parsed_feed["entries"][0]:
           self.content_key = "summary"
         # Check if entries are sorted normally
-        first_entry_date = utils.st_to_dt(parsed_feed["entries"][0]["published_parsed"])
-        second_entry_date = utils.st_to_dt(parsed_feed["entries"][1]["published_parsed"])
+        first_entry_date = self.st_to_dt(parsed_feed["entries"][0]["published_parsed"])
+        second_entry_date = self.st_to_dt(parsed_feed["entries"][1]["published_parsed"])
         if first_entry_date < second_entry_date:
           # If they aren't mark the feed as such
           self.sorted_normal = False

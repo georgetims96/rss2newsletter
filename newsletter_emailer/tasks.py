@@ -4,14 +4,17 @@ from __future__ import absolute_import, unicode_literals
 from celery import shared_task
 from datetime import datetime
 from feedaggregator.models import Feed
-
+from datetime import datetime, timezone, timedelta
 @shared_task
 def send_feeds():
   feeds = Feed.objects.all()
   # Loop through all feeds
   for feed in feeds:
-    # Send an email
-    feed.send_email()
-    # Update feed's last sent attribute accordingly
+    # Get entries from last 7 days
+    # TODO need to have datetime be based on last sent
+    # TODO datetiime not timezone aware
+    feed_entries = feed.filter_entries(datetime.now() - timedelta(days=7))
+    for entry in feed_entries:
+      feed.generate_entry(entry)
     feed.last_sent = datetime.now()
     feed.save()
