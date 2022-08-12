@@ -74,6 +74,11 @@ class Feed(models.Model):
           self.sorted_normal = False
     super(Feed, self).save(*args, **kwargs)
   
+class Entry(models.Model):
+  feed = models.ForeignKey(Feed, on_delete=models.CASCADE)
+  title = models.CharField(max_length=254)
+  body = models.TextField()
+
 class Subscription(models.Model):
   user = models.ForeignKey(Subscriber, on_delete=models.CASCADE)
   feed = models.ForeignKey(Feed, on_delete=models.CASCADE)
