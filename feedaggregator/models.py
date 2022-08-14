@@ -31,16 +31,19 @@ class Feed(models.Model):
       feed=self,
     )
     if self.content_key == "content":
-      # print(entry["content"][0].keys)
       new_entry.body = raw_entry["content"][0]["value"]
+      new_entry.published_date = self.st_to_dt(raw_entry['published_parsed'])
       new_entry.title = raw_entry["content"][0]["title"]
       new_entry.save()
     elif self.content_key == "summary":
       new_entry.body = raw_entry["summary"]
+      new_entry.published_date = self.st_to_dt(raw_entry['published_parsed'])
       new_entry.title = raw_entry["title"]
     return new_entry
 
   def st_to_dt(self, st):
+    # FIXME remove print
+    print(st)
     return datetime.fromtimestamp(mktime(st))
 
   def filter_entries(self, entries_since_date):
@@ -78,6 +81,7 @@ class Feed(models.Model):
   
 class Entry(models.Model):
   feed = models.ForeignKey(Feed, on_delete=models.CASCADE)
+  published_date = models.DateTimeField(null=True, default=None)
   title = models.CharField(max_length=254)
   body = models.TextField()
 
