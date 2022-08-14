@@ -22,27 +22,23 @@ class Feed(models.Model):
     return ""
   
   def generate_entry(self, raw_entry):
+    '''
+    Create Entry object given raw entry from parsed feed
+    '''
     # TODO create Mail object and add to newsletter_emailer
-    # Parse the relevant feed
-    parsed_feed = feedparser.parse(self.url)
     # Get the parsed feeds' entries
-    feed_entries = parsed_feed["entries"]
-    # Loop over parsed feeds' entries
-    for entry in feed_entries:
-      new_entry = Entry(
-        feed=self,
-      )
-      if self.content_key == "content":
-        # print(entry["content"][0].keys)
-        new_entry.body = raw_entry["content"][0]["value"]
-        new_entry.title = raw_entry["content"][0]["title"]
-        new_entry.save()
-        # print(entry["content"][0]["value"])
-      elif self.content_key == "summary":
-        new_entry.body = raw_entry["summary"]
-        new_entry.title = raw_entry["title"]
-        # print(entry["summary"])
-      return new_entry
+    new_entry = Entry(
+      feed=self,
+    )
+    if self.content_key == "content":
+      # print(entry["content"][0].keys)
+      new_entry.body = raw_entry["content"][0]["value"]
+      new_entry.title = raw_entry["content"][0]["title"]
+      new_entry.save()
+    elif self.content_key == "summary":
+      new_entry.body = raw_entry["summary"]
+      new_entry.title = raw_entry["title"]
+    return new_entry
 
   def st_to_dt(self, st):
     return datetime.fromtimestamp(mktime(st))
