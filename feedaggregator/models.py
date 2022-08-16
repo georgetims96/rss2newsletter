@@ -31,7 +31,8 @@ class Feed(models.Model):
       feed=self,
     )
     if self.content_key == "content":
-      new_entry.body = raw_entry["content"][0]["value"]
+      # FIXME make sure that this fixes the issue with unicode
+      new_entry.body = str(raw_entry["content"][0]["value"], encoding='utf-8', errors='strict')
       new_entry.published_date = self.st_to_dt(raw_entry['published_parsed'])
       new_entry.title = raw_entry["content"][0]["title"]
       new_entry.save()
