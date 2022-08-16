@@ -37,7 +37,7 @@ class Feed(models.Model):
       new_entry.title = raw_entry["content"][0]["title"]
       new_entry.save()
     elif self.content_key == "summary":
-      new_entry.body = raw_entry["summary"]
+      new_entry.body = str(raw_entry["summary"], encoding='utf-8', errors='strict')
       new_entry.published_date = self.st_to_dt(raw_entry['published_parsed'])
       new_entry.title = raw_entry["title"]
     return new_entry
