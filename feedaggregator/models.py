@@ -2,7 +2,7 @@ from ast import parse
 from django.db import models
 from users.models import Subscriber
 import feedparser
-from datetime import datetime
+from datetime import datetime, timezone
 from time import mktime
 
 class Feed(models.Model):
@@ -16,6 +16,9 @@ class Feed(models.Model):
   # Checks if RSS entries are sorted most recent first (i.e. True)
   sorted_normal = models.BooleanField(default=True)
 
+  class Meta:
+    ordering = ['title']
+  
   def __str__(self):
     if self.title:
       return self.title
@@ -45,7 +48,7 @@ class Feed(models.Model):
   def st_to_dt(self, st):
     # FIXME remove print
     print(st)
-    return datetime.fromtimestamp(mktime(st))
+    return datetime.fromtimestamp(mktime(st), tz=timezone.UTC)
 
   def filter_entries(self, entries_since_date):
     '''
