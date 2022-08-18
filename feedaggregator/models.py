@@ -2,7 +2,8 @@ from ast import parse
 from django.db import models
 from users.models import Subscriber
 import feedparser
-from datetime import datetime, timezone
+from datetime import datetime
+import pytz
 from time import mktime
 
 class Feed(models.Model):
@@ -46,9 +47,11 @@ class Feed(models.Model):
     return new_entry
 
   def st_to_dt(self, st):
-    # FIXME remove print
-    print(st)
-    return datetime.fromtimestamp(mktime(st), tz=timezone.UTC)
+    # Generate datetime object from passed time struct
+    # FIXME tz=pytz.utc does not work for some reason
+    rel_datetime = datetime.fromtimestamp(mktime(st), tz=pytz.utc)
+    print(rel_datetime.tzinfo)
+    return datetime.fromtimestamp(mktime(st), tz=pytz.utc)
 
   def filter_entries(self, entries_since_date):
     '''
