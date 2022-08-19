@@ -5,7 +5,7 @@ import feedparser
 from datetime import datetime
 import pytz
 from time import mktime
-from xml.sax.saxutils import unescape
+import html
 
 class Feed(models.Model):
   subscriptions = models.ManyToManyField(Subscriber)
@@ -37,12 +37,12 @@ class Feed(models.Model):
     )
     if self.content_key == "content":
       # FIXME make sure that this fixes the issue with unicode
-      new_entry.body = unescape(raw_entry["content"][0]["value"])
+      new_entry.body = html.unescape(raw_entry["content"][0]["value"])
       new_entry.published_date = self.st_to_dt(raw_entry['published_parsed'])
       new_entry.title = raw_entry["content"][0]["title"]
       new_entry.save()
     elif self.content_key == "summary":
-      new_entry.body = unescape(raw_entry["summary"])
+      new_entry.body = html.unescape(raw_entry["summary"])
       new_entry.published_date = self.st_to_dt(raw_entry['published_parsed'])
       new_entry.title = raw_entry["title"]
     return new_entry
