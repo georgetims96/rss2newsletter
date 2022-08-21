@@ -7,6 +7,7 @@ from users.models import Subscriber
 from datetime import datetime, timezone
 
 # Why does LoginRequiredMixin have to go before CreateView?
+# TODO add Entry view!!!
 class FeedFormView(LoginRequiredMixin, generic.CreateView):
   template_name = "feedaggregator/add.html"
   form_class = FeedForm
