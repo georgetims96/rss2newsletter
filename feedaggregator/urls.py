@@ -1,5 +1,5 @@
 from django.urls import path
-from feedaggregator.views import FeedFormView, FeedDiscoverView, FeedSubscribeView, FeedSubscriptionView, FeedUnsubscribeView
+from feedaggregator.views import FeedFormView, FeedDiscoverView, FeedSubscribeView, FeedSubscriptionView, FeedUnsubscribeView, EntryListView
 
 app_name = 'feedaggregator'
 
@@ -8,5 +8,6 @@ urlpatterns = [
   path('discover/', FeedDiscoverView.as_view(), name='discover_feeds'),
   path('subscribe/<feed_pk>', FeedSubscribeView.as_view(), name="subscribe_feed"),
   path('unsubscribe/<feed_pk>', FeedUnsubscribeView.as_view(), name="unsubscribe_feed"),
-  path('view/', FeedSubscriptionView.as_view(), name="view_feeds")
+  path('view/', FeedSubscriptionView.as_view(), name="view_feeds"),
+  path('entries/<feed_pk>', EntryListView.as_view(), name='entry_list')
 ]

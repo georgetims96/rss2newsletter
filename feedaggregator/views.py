@@ -2,7 +2,7 @@ from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin
 from feedaggregator.forms import FeedForm
 from django.urls import reverse_lazy
-from feedaggregator.models import Feed, Subscription
+from feedaggregator.models import Feed, Subscription, Entry
 from users.models import Subscriber
 from datetime import datetime, timezone
 
@@ -60,3 +60,10 @@ class FeedUnsubscribeView(LoginRequiredMixin, generic.RedirectView):
       )
       subscription_to_remove.delete()
     return self.request.META.get('HTTP_REFERER')
+
+class EntryListView(LoginRequiredMixin, generic.ListView):
+  template_name = "feedaggregator/entry_list.html"
+  context_object_name = "entries"
+
+  def get_queryset(self):
+    return Entry.objects.filter(feed=self.kwargs['feed_pk'])
