@@ -69,8 +69,6 @@ class EntryListView(LoginRequiredMixin, generic.ListView):
     return Entry.objects.filter(feed=self.kwargs['feed_pk'])
 
 class EntryDetailView(LoginRequiredMixin, generic.DetailView):
+  model = Entry
   template_name = "feedaggregator/entry_detail.html"
   context_object_name = "entry"
-  
-  def get_queryset(self):
-    return Entry.objects.get(id=self.kwargs['entry_pl'])
