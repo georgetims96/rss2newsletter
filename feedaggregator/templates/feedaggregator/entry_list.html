@@ -1,3 +1,4 @@
 {% for entry in entries %}
-<li>{{ entry.title }}</li>
+<li>
+  <a href="{% url 'feedaggregator:entry_detail' pk=entry.pk %}">{{ entry.title }}</a></li>
 {% endfor %}
