@@ -1,3 +1,8 @@
+{% extends 'feedaggregator/base.html' %}
+{% block title %} 
+Entry List
+{% endblock %}
+{% block content %}
 <h1>
 {% if entries %}
 {{ entries.last.feed.title }}
@@ -10,3 +15,4 @@ There are no entries for this feed :(
   <a href="{% url 'feedaggregator:entry_detail' pk=entry.pk %}">{{ entry.title }}</a>
 </li>
 {% endfor %}
+{% endblock %}
