@@ -1,4 +1,12 @@
+<h1>
+{% if entries %}
+{{ entries.last.feed.title }}
+{% else %}
+There are no entries for this feed :(
+{% endif %}
+</h1>
 {% for entry in entries %}
 <li>
-  <a href="{% url 'feedaggregator:entry_detail' pk=entry.pk %}">{{ entry.title }}</a></li>
+  <a href="{% url 'feedaggregator:entry_detail' pk=entry.pk %}">{{ entry.title }}</a>
+</li>
 {% endfor %}
