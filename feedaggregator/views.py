@@ -66,7 +66,7 @@ class EntryListView(LoginRequiredMixin, generic.ListView):
   template_name = "feedaggregator/entry_list.html"
   context_object_name = "entries"
   ordering = ['-pk']
-  paginate_by = 6
+  # paginate_by = 6
 
   def get_queryset(self):
     queryset = super(EntryListView, self).get_queryset().filter(feed=self.kwargs['feed_pk'])

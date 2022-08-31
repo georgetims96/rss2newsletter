@@ -1,0 +1,1 @@
+- Celery redownloads entries. Need to either have some duplicate detection or rely on timestamps
