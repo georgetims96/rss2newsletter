@@ -62,13 +62,18 @@ class FeedUnsubscribeView(LoginRequiredMixin, generic.RedirectView):
     return self.request.META.get('HTTP_REFERER')
 
 class EntryListView(LoginRequiredMixin, generic.ListView):
+  model = Entry
   template_name = "feedaggregator/entry_list.html"
   context_object_name = "entries"
+  ordering = ['-pk']
+  paginate_by = 6
 
   def get_queryset(self):
-    return Entry.objects.filter(feed=self.kwargs['feed_pk'])
+    queryset = super(EntryListView, self).get_queryset().filter(feed=self.kwargs['feed_pk'])
+    return queryset
 
 class EntryDetailView(LoginRequiredMixin, generic.DetailView):
   model = Entry
   template_name = "feedaggregator/entry_detail.html"
   context_object_name = "entry"
+   
