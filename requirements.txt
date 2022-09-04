@@ -1,7 +1,7 @@
 Django>=3.0,<4.0
 psycopg2>=2.8
-requests
-feedparser
+requests==2.28.1
+feedparser==6.0.10
 celery
 redis
 django-celery-beat
