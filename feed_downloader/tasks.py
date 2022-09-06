@@ -8,7 +8,7 @@ import pytz
 import sendgrid
 
 @shared_task
-def update_feeds():
+def send_feeds():
   feeds = Feed.objects.all()
   # Loop through all feeds
   for feed in feeds:
@@ -22,4 +22,4 @@ def update_feeds():
       except Exception as e:
         print(e)
     feed.last_sent = datetime.now(pytz.utc)
-    f
+    feed.save()

@@ -44,7 +44,7 @@ INSTALLED_APPS = [
     'feedaggregator',
     'users',
     'newsletter_emailer',
-    'feed_downloader'
+    'feed_downloader',
     'django_celery_beat',
     'crispy_forms',
 ]
