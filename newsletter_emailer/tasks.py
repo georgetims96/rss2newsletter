@@ -7,19 +7,4 @@ from datetime import datetime, timedelta
 import pytz
 import sendgrid
 
-@shared_task
-def send_feeds():
-  feeds = Feed.objects.all()
-  # Loop through all feeds
-  for feed in feeds:
-    # Get entries from last 7 days
-    # TODO need to have datetime be based on last sent
-    feed_entries = feed.filter_entries(datetime.now(tz=pytz.utc) - timedelta(days=7))
-    for entry in feed_entries:
-      try:
-        new_entry = feed.generate_entry(entry)
-        new_entry.save()
-      except Exception as e:
-        print(e)
-    feed.last_sent = datetime.now(pytz.utc)
-    feed.save()
+# TODO set up cron job for emails!

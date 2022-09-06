@@ -154,9 +154,10 @@ EMAIL_HOST_PASSWORD = es.EMAIL_HOST_PASSWORD
 CELERY_BROKER_URL = os.environ.get("CELERY_BROKER", "redis://redis:6379/0")
 CELERY_RESULT_BACKEND = os.environ.get("CELERY_BROKER", "redis://redis:6379/0")
 
+# Schedules feed downloads
 CELERY_BEAT_SCHEDULE = {
   "scheduled_task": {
-    "task": "newsletter_emailer.tasks.send_feeds",
+    "task": "feed_downloader.tasks.update_feeds",
     "schedule": 240.0,
     "args": (),
   }
