@@ -5,6 +5,7 @@ from celery import shared_task
 from feedaggregator.models import Feed
 from datetime import datetime, timedelta
 import pytz
+import sendgrid
 
 @shared_task
 def send_feeds():

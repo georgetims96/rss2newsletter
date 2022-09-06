@@ -41,11 +41,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'crispy_forms',
     'feedaggregator',
     'users',
     'newsletter_emailer',
+    'feed_downloader'
     'django_celery_beat',
+    'crispy_forms',
 ]
 
 MIDDLEWARE = [

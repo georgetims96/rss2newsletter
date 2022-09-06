@@ -2,3 +2,4 @@
 data/
 *.swp
 newsletter_emailer/email_settings.py
+./celerybeat-schedule
