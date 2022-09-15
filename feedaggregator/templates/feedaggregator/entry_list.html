@@ -5,7 +5,7 @@ Entry List
 {% block content %}
 <h1>
 {% if entries %}
-{{ entries.last.feed.title }}
+{{ feed_title }}
 {% else %}
 There are no entries for this feed :(
 {% endif %}

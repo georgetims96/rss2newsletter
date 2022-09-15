@@ -8,7 +8,7 @@ import pytz
 import sendgrid
 
 @shared_task
-def send_feeds():
+def update_feeds():
   feeds = Feed.objects.all()
   # Loop through all feeds
   for feed in feeds:

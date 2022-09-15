@@ -66,11 +66,18 @@ class EntryListView(LoginRequiredMixin, generic.ListView):
   template_name = "feedaggregator/entry_list.html"
   context_object_name = "entries"
   ordering = ['-pk']
-  # paginate_by = 6
+  paginate_by = 6
 
   def get_queryset(self):
-    queryset = super(EntryListView, self).get_queryset().filter(feed=self.kwargs['feed_pk'])
+    queryset = Entry.objects.filter(feed__id=self.kwargs['feed_pk'])
     return queryset
+
+  def get_context_data(self, **kwargs):
+    context = super().get_context_data(**kwargs)
+    # FIXME non-existent feed guarding
+    context['feed_title'] = Feed.objects.get(id=self.kwargs['feed_pk']).title
+    return context
+
 
 class EntryDetailView(LoginRequiredMixin, generic.DetailView):
   model = Entry
