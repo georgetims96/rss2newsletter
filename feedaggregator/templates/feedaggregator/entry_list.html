@@ -3,16 +3,24 @@
 Entry List
 {% endblock %}
 {% block content %}
-<h1>
-{% if entries %}
-{{ feed_title }}
-{% else %}
-There are no entries for this feed :(
-{% endif %}
-</h1>
-{% for entry in entries %}
-<li>
-  <a href="{% url 'feedaggregator:entry_detail' pk=entry.pk %}">{{ entry.title }}</a>
-</li>
-{% endfor %}
+<div class="row">
+  <div clas="col">
+    <h1>
+    {% if entries %}
+    {{ feed_title }}
+    {% else %}
+    There are no entries for this feed :(
+    {% endif %}
+    </h1>
+  </div>
+</div>
+<div class="row">
+  <div class="col">
+    {% for entry in entries %}
+    <li>
+      <a href="{% url 'feedaggregator:entry_detail' pk=entry.pk %}">{{ entry.title }}</a>
+    </li>
+  {% endfor %}
+  </div>
+</div>
 {% endblock %}
