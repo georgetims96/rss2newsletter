@@ -16,6 +16,7 @@ class FeedFormView(LoginRequiredMixin, generic.CreateView):
   success_url = reverse_lazy('feedaggregator:discover_feeds')
 
   def get(self, *args, **kwargs):
+    # FIXME If we're doing this, maybe we don't need a LoginRequiredMixin
     if not self.request.user.is_superuser:
       return redirect(reverse_lazy('feedaggregator:discover_feeds'))
     return super(FeedFormView, self).get(*args, **kwargs)

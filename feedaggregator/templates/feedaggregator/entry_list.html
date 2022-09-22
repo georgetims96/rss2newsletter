@@ -23,6 +23,7 @@ Entry List
   {% endfor %}
   </div>
 </div>
+{% if page_obj.num_pages > 1 %}
 <div class="row justify-content-center">
 <div class="col">
 <nav aria-label="discover navigation">
@@ -44,4 +45,5 @@ Entry List
 </nav>
 </div>
 </div>
+{% endif %}
 {% endblock %}
