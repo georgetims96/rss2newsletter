@@ -5,6 +5,7 @@ from django.urls import reverse_lazy
 from feedaggregator.models import Feed, Subscription, Entry
 from users.models import Subscriber
 from datetime import datetime, timezone
+from django.shortcuts import redirect
 
 # Why does LoginRequiredMixin have to go before CreateView?
 # TODO add Entry view!!!
@@ -13,6 +14,11 @@ class FeedFormView(LoginRequiredMixin, generic.CreateView):
   form_class = FeedForm
   # FIXME why is lazy necessary?
   success_url = reverse_lazy('feedaggregator:discover_feeds')
+
+  def get(self, *args, **kwargs):
+    if not self.request.user.is_superuser:
+      return redirect(reverse_lazy('feedaggregator:discover_feeds'))
+    return super(FeedFormView, self).get(*args, **kwargs)
 
   def get_context_data(self, **kwargs):
     context = super().get_context_data(**kwargs)
