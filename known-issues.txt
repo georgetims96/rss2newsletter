@@ -1,3 +1,4 @@
 - Celery redownloads entries. Need to either have some duplicate detection or rely on timestamps
 - Feedparser uses timestructs, which do not contain timezone information
-- Pagination is not working for entries given the filter
+- ~Pagination is not working for entries given the filter~
+- Some posts do not have timestamps. This currently breaks the model
