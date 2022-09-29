@@ -1,4 +1,4 @@
-{% extends 'feedaggregator/base.html' %}
+{% extends 'feedaggregator/partials/base.html' %}
 {% block title %} 
 Entry List
 {% endblock %}
@@ -23,5 +23,5 @@ Entry List
   {% endfor %}
   </div>
 </div>
-{% include 'feedaggregator/pagination.html' %}
+{% include 'feedaggregator/partials/pagination.html' %}
 {% endblock %}

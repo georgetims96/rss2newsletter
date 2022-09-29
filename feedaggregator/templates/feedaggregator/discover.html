@@ -1,4 +1,4 @@
-{% extends 'feedaggregator/base.html' %}
+{% extends 'feedaggregator/partials/base.html' %}
 {% block title %}Discover Feeds{% endblock %}
 {% block content %}
 <div class="row">
@@ -6,7 +6,7 @@
     <h1>Discover</h1>
   </div>
 </div>
-{% include 'feedaggregator/navbar.html' with selected='discover' %}
+{% include 'feedaggregator/partials/navbar.html' with selected='discover' %}
 {% if feeds %}
 <div class="row">
 <div class="col">
@@ -25,7 +25,7 @@
 </ul>
 </div>
 </div>
-{% include 'feedaggregator/pagination.html' %}
+{% include 'feedaggregator/partials/pagination.html' %}
 {% else %}
 <h6>No feeds to discover yet!</h6>
 {% endif %}
