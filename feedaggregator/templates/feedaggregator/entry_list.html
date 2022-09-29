@@ -6,21 +6,24 @@ Entry List
 <div class="row">
   <div clas="col">
     <h1>
-    {% if entries %}
     {{ feed_title }}
-    {% else %}
-    There are no entries for this feed :(
-    {% endif %}
     </h1>
   </div>
 </div>
 <div class="row">
   <div class="col">
+    {% if entries %}
+    <ul>
     {% for entry in entries %}
     <li>
       <a href="{% url 'feedaggregator:entry_detail' pk=entry.pk %}">{{ entry.title }}</a>
     </li>
-  {% endfor %}
+    {% endfor %}
+    </ul>
+    {% else %}
+    <!-- need to get rid of weird spacing -->
+    There are no entries for this feed :(
+    {% endif %}
   </div>
 </div>
 {% include 'feedaggregator/partials/pagination.html' %}
