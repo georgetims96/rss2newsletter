@@ -8,7 +8,6 @@ from time import mktime
 import html
 
 class Feed(models.Model):
-  subscriptions = models.ManyToManyField(Subscriber)
   title = models.CharField(max_length=150, blank=True, null=True)
   url = models.URLField(max_length=150, blank=False, unique=True, verbose_name="URL")
   feed_encoding = models.CharField(max_length=150, blank=True, null=True)
@@ -90,6 +89,7 @@ class Entry(models.Model):
   published_date = models.DateTimeField(null=True, default=None)
   title = models.CharField(max_length=254)
   body = models.TextField()
+  sent = models.BooleanField(default=False)
   
   class Meta:
     verbose_name_plural = "entries"

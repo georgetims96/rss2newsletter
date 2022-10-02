@@ -160,6 +160,11 @@ CELERY_BEAT_SCHEDULE = {
     "task": "feed_downloader.tasks.update_feeds",
     "schedule": 240.0,
     "args": (),
+  },
+  "scheduled_task": {
+    "task": "newsletter_emailer.tasks.send_entries",
+    "schedule": 300.0,
+    "args": (),
   }
 }
 
