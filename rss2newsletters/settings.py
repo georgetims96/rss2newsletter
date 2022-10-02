@@ -156,12 +156,12 @@ CELERY_RESULT_BACKEND = os.environ.get("CELERY_BROKER", "redis://redis:6379/0")
 
 # Schedules feed downloads
 CELERY_BEAT_SCHEDULE = {
-  "scheduled_task": {
+  "scheduled_update_feeds_task": {
     "task": "feed_downloader.tasks.update_feeds",
     "schedule": 240.0,
     "args": (),
   },
-  "scheduled_task": {
+  "scheduled_send_entries_task": {
     "task": "newsletter_emailer.tasks.send_entries",
     "schedule": 300.0,
     "args": (),
