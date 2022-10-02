@@ -20,7 +20,6 @@ def send_entries():
         # Get the subscribers to the feed
         rel_subscribers = Subscriber.objects.filter(subscriptions=feed) 
         # Loop over each entry, sending each one to the relevant recipients
-        for entry in entries_to_send:
-            # Email(rel)
-            email_to_send = Email(rel_subscribers, entry)
-            email_to_send.send()
+        # Email(rel)
+        email_to_send = Email(rel_subscribers, entries_to_send)
+        email_to_send.send()
