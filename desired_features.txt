@@ -1,0 +1,4 @@
+- Categories for feeds, with badges if 'all' is selected.
+- Rank feeds by number of subscribers
+- Add author to Entry model
+- Prettier format for email
