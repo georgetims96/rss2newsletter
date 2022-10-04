@@ -77,11 +77,14 @@ class Feed(models.Model):
         elif "summary" in parsed_feed["entries"][0]:
           self.content_key = "summary"
         # Check if entries are sorted normally
-        first_entry_date = self.st_to_dt(parsed_feed["entries"][0]["published_parsed"])
-        second_entry_date = self.st_to_dt(parsed_feed["entries"][1]["published_parsed"])
-        if first_entry_date < second_entry_date:
-          # If they aren't mark the feed as such
-          self.sorted_normal = False
+        try:
+          first_entry_date = self.st_to_dt(parsed_feed["entries"][0]["published_parsed"])
+          second_entry_date = self.st_to_dt(parsed_feed["entries"][1]["published_parsed"])
+          if first_entry_date < second_entry_date:
+            # If they aren't mark the feed as such
+            self.sorted_normal = False
+        except:
+          self.sorted_normal = True
     super(Feed, self).save(*args, **kwargs)
   
 class Entry(models.Model):
