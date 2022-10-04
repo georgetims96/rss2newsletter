@@ -92,6 +92,7 @@ class Entry(models.Model):
   sent = models.BooleanField(default=False)
   
   class Meta:
+    ordering = ['-pk']
     verbose_name_plural = "entries"
     
 class Subscription(models.Model):

@@ -3,3 +3,4 @@
 - ~Pagination is not working for entries given the filter~
 - Some posts do not have timestamps. This currently breaks the model's save override.
 - Need to add entries in correct order when timestamp is not provided
+- Need to add correct ordering for a ListView
