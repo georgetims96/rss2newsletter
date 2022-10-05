@@ -14,6 +14,9 @@ def update_feeds():
     # Get entries from last 7 days
     # TODO need to have datetime be based on last sent
     feed_entries = feed.filter_entries(datetime.now(tz=pytz.utc) - timedelta(days=7))
+    # If feeds are sorted normally, we should reverse
+    if feed.sorted_normal:
+      feed_entries.reverse()
     # Loop over relevant entries
     for entry in feed_entries:
       # Try to generate an entry
