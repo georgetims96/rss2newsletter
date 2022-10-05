@@ -2,5 +2,6 @@
 {% block title %}{{ entry.title }}{% endblock %}
 {% block content %}
 <h1> {{ entry.title }} </h1>
+{% if entry.author %}<h6>By {{ entry.author }}</h6>{% endif %}
 {{ entry.body|safe }}
 {% endblock %}

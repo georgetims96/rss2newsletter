@@ -38,10 +38,12 @@ class Feed(models.Model):
       new_entry.body = html.unescape(raw_entry["content"][0]["value"])
       new_entry.published_date = self.st_to_dt(raw_entry['published_parsed'])
       new_entry.title = raw_entry["title"]
+      new_entry.author = raw_entry["author"]
     elif self.content_key == "summary":
       new_entry.body = html.unescape(raw_entry["summary"])
       new_entry.published_date = self.st_to_dt(raw_entry['published_parsed'])
       new_entry.title = raw_entry["title"]
+      new_entry.author = raw_entry["author"]
     return new_entry
 
   def st_to_dt(self, st):
@@ -90,6 +92,7 @@ class Feed(models.Model):
   
 class Entry(models.Model):
   feed = models.ForeignKey(Feed, on_delete=models.CASCADE)
+  author = models.CharField(max_length=100, default="", blank=True)
   published_date = models.DateTimeField(null=True, default=None)
   title = models.CharField(max_length=254)
   body = models.TextField()
