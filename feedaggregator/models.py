@@ -77,6 +77,7 @@ class Feed(models.Model):
         elif "summary" in parsed_feed["entries"][0]:
           self.content_key = "summary"
         # Check if entries are sorted normally
+        # Using a try-except to account for cases where we don't have
         try:
           first_entry_date = self.st_to_dt(parsed_feed["entries"][0]["published_parsed"])
           second_entry_date = self.st_to_dt(parsed_feed["entries"][1]["published_parsed"])
