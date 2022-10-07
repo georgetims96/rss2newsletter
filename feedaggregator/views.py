@@ -1,4 +1,5 @@
 from django.views import generic
+from django.db.models import F
 from django.contrib.auth.mixins import LoginRequiredMixin
 from feedaggregator.forms import FeedForm
 from django.urls import reverse_lazy
@@ -50,24 +51,31 @@ class FeedSubscribeView(LoginRequiredMixin, generic.RedirectView):
     feed_pk = kwargs.get("feed_pk", None)
     rel_user = self.request.user
     rel_feed = Feed.objects.get(pk=feed_pk)
-    if Feed.objects.get(pk=feed_pk) and not Subscription.objects.filter(user=rel_user, feed=rel_feed).exists():
+    if rel_feed and not Subscription.objects.filter(user=rel_user, feed=rel_feed).exists():
       Subscription.objects.create(
         user=self.request.user,
-        feed=Feed.objects.get(pk=feed_pk),
+        feed=rel_feed,
         date_subscribed=datetime.now(timezone.utc)
       )
+      rel_feed.num_subscribers = F('num_subscribers') + 1
+      rel_feed.save()
     return self.request.META.get('HTTP_REFERER')
 
 class FeedUnsubscribeView(LoginRequiredMixin, generic.RedirectView):
 
   def get_redirect_url(self, *args, **kwargs):
     feed_pk = kwargs.get("feed_pk", None)
-    if Feed.objects.get(pk=feed_pk):
+    rel_feed = Feed.objects.get(pk=feed_pk)
+    if rel_feed:
       subscription_to_remove = Subscription.objects.get(
         user=self.request.user,
         feed__pk=feed_pk
       )
       subscription_to_remove.delete()
+      # FIXME could I override delete method/do signal
+      # FIXME is this the best way of dealing with this
+      rel_feed.num_subscribers = F('num_subscribers') - 1
+      rel_feed.save()
     return self.request.META.get('HTTP_REFERER')
 
 class EntryListView(LoginRequiredMixin, generic.ListView):

@@ -16,9 +16,11 @@ class Feed(models.Model):
   content_key = models.CharField(max_length=25, default="invalid")
   # Checks if RSS entries are sorted most recent first (i.e. True)
   sorted_normal = models.BooleanField(default=True)
+  num_subscribers = models.IntegerField(default=0)
 
   class Meta:
-    ordering = ['title']
+    # FIXME do we need to do it this way
+    ordering = ['-num_subscribers']
   
   def __str__(self):
     if self.title:
