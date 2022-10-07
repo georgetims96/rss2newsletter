@@ -4,3 +4,4 @@
 - Some posts do not have timestamps. This currently breaks the model's save override.
 - Need to add entries in correct order when timestamp is not provided
 - Need to add correct ordering for a ListView
+- Bug where if you add subscription in new window you can also add it in the main window. Result is two subscriptions.
