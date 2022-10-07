@@ -48,7 +48,9 @@ class FeedSubscribeView(LoginRequiredMixin, generic.RedirectView):
 
   def get_redirect_url(self, *args, **kwargs):
     feed_pk = kwargs.get("feed_pk", None)
-    if Feed.objects.get(pk=feed_pk):
+    rel_user = self.request.user
+    rel_feed = Feed.objects.get(pk=feed_pk)
+    if Feed.objects.get(pk=feed_pk) and not Subscription.objects.filter(user=rel_user, feed=rel_feed).exists():
       Subscription.objects.create(
         user=self.request.user,
         feed=Feed.objects.get(pk=feed_pk),
