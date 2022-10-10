@@ -27,7 +27,7 @@ class Email:
     
     def send_real(self):
         '''
-        Method that will actually send email to relevant recipients 
+        Method that leverages SendGrid API to actually send email to relevant recipients 
         '''
         sg = sendgrid.SendGridAPIClient(api_key=SENDGRID_API_KEY)
         from_email = Email(FROM_EMAIL)
