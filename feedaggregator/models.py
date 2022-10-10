@@ -99,6 +99,7 @@ class Entry(models.Model):
   title = models.CharField(max_length=254)
   body = models.TextField()
   sent = models.BooleanField(default=False)
+  saved_by = models.ManyToManyField(Subscriber, related_name='saved_entries', through='Bookmark')
   
   class Meta:
     ordering = ['-pk']
@@ -115,3 +116,10 @@ class Subscription(models.Model):
   class Meta:
     ordering = ['date_subscribed']
 
+class Bookmark(models.Model):
+  entry = models.ForeignKey(Entry, on_delete=models.CASCADE)
+  subscriber = models.ForeignKey(Subscriber, on_delete=models.CASCADE)
+  saved_time = models.DateTimeField(auto_now_add=True)
+
+  class Meta:
+    ordering = ['-saved_time']
