@@ -1,9 +1,10 @@
+from ast import Sub
 from django.views import generic
 from django.db.models import F
 from django.contrib.auth.mixins import LoginRequiredMixin
 from feedaggregator.forms import FeedForm
 from django.urls import reverse_lazy
-from feedaggregator.models import Feed, Subscription, Entry
+from feedaggregator.models import Feed, Subscription, Entry, Bookmark
 from users.models import Subscriber
 from datetime import datetime, timezone
 from django.shortcuts import redirect
@@ -76,6 +77,18 @@ class FeedUnsubscribeView(LoginRequiredMixin, generic.RedirectView):
       # FIXME is this the best way of dealing with this
       rel_feed.num_subscribers = F('num_subscribers') - 1
       rel_feed.save()
+    return self.request.META.get('HTTP_REFERER')
+
+class EntrySaveView(LoginRequiredMixin, generic.RedirectView):
+  def get_redirect_url(self, *args, **kwargs):
+    feed_pk = kwargs.get("entry_pk", None)
+    rel_entry = Entry.objects.get(pk=entry_pk)
+    if rel_entry:
+      bookmark_to_add = Bookmark(
+        Subscriber = self.request.user,
+        Entry = rel_entry
+      )
+      bookmark_to_add.save()
     return self.request.META.get('HTTP_REFERER')
 
 class EntryListView(LoginRequiredMixin, generic.ListView):
