@@ -81,12 +81,12 @@ class FeedUnsubscribeView(LoginRequiredMixin, generic.RedirectView):
 
 class EntrySaveView(LoginRequiredMixin, generic.RedirectView):
   def get_redirect_url(self, *args, **kwargs):
-    feed_pk = kwargs.get("entry_pk", None)
+    entry_pk = kwargs.get("entry_pk", None)
     rel_entry = Entry.objects.get(pk=entry_pk)
     if rel_entry:
       bookmark_to_add = Bookmark(
-        Subscriber = self.request.user,
-        Entry = rel_entry
+        subscriber = self.request.user,
+        entry = rel_entry
       )
       bookmark_to_add.save()
     return self.request.META.get('HTTP_REFERER')
