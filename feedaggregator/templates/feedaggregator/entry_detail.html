@@ -3,6 +3,7 @@
 {% block content %}
 <h1> {{ entry.title }} </h1>
 {% if entry.author %}<h6 class="text-muted"><em>By {{ entry.author }}</em></h6>{% endif %}
+{% if entry in %}
 <a href="{% url 'feedaggregator:bookmark_entry' entry_pk=entry.pk %}" class="badge badge-success badge-pill">+</a>
 {{ entry.body|safe }}
 {% endblock %}

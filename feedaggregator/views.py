@@ -61,6 +61,11 @@ class FeedSubscribeView(LoginRequiredMixin, generic.RedirectView):
       rel_feed.num_subscribers = F('num_subscribers') + 1
       rel_feed.save()
     return self.request.META.get('HTTP_REFERER')
+  
+  def get_context_data(self, **kwargs):
+    context = super().get_context_data(**kwargs)
+    context["user_bookmarks"] = self.request.user.saved_entries.all()
+    return context
 
 class FeedUnsubscribeView(LoginRequiredMixin, generic.RedirectView):
 
@@ -89,6 +94,19 @@ class EntrySaveView(LoginRequiredMixin, generic.RedirectView):
         entry = rel_entry
       )
       bookmark_to_add.save()
+    return self.request.META.get('HTTP_REFERER')
+
+class EntryUnsaveView(LoginRequiredMixin, generic.RedirectView):
+  def get_redirect_url(self, *args, **kwargs):
+    entry_pk = kwargs.get("entry_pk", None)
+    rel_entry = Entry.objects.get(pk=entry_pk)
+    if rel_entry:
+      bookmark_to_remove_qs = Bookmark.objects.filter(
+        subscriber = self.request.user,
+        entry = rel_entry
+      )
+      if bookmark_to_remove_qs.count() > 0:
+        bookmark_to_remove_qs.delete()
     return self.request.META.get('HTTP_REFERER')
 
 class EntryListView(LoginRequiredMixin, generic.ListView):
