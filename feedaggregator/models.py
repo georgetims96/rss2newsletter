@@ -123,3 +123,6 @@ class Bookmark(models.Model):
 
   class Meta:
     ordering = ['-saved_time']
+  
+  def __str__(self):
+    return f'{self.entry.title} - {self.subscriber.email}'
