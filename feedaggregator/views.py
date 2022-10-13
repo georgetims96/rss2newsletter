@@ -62,11 +62,7 @@ class FeedSubscribeView(LoginRequiredMixin, generic.RedirectView):
       rel_feed.save()
     return self.request.META.get('HTTP_REFERER')
   
-  def get_context_data(self, **kwargs):
-    context = super().get_context_data(**kwargs)
-    context["user_bookmarks"] = self.request.user.saved_entries.all()
-    return context
-
+  
 class FeedUnsubscribeView(LoginRequiredMixin, generic.RedirectView):
 
   def get_redirect_url(self, *args, **kwargs):
@@ -131,4 +127,10 @@ class EntryDetailView(LoginRequiredMixin, generic.DetailView):
   model = Entry
   template_name = "feedaggregator/entry_detail.html"
   context_object_name = "entry"
+
+  def get_context_data(self, **kwargs):
+    context = super().get_context_data(**kwargs)
+    context["user_bookmarks"] = self.request.user.saved_entries.all()
+    return context
+
    
