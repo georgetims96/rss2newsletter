@@ -1,5 +1,29 @@
-<ul>
+{% extends 'feedaggregator/partials/base.html' %}
+{% block title %} 
+Bookmark List
+{% endblock %}
+{% block content %}
+<div class="row">
+  <div clas="col">
+    <h1>
+    Bookmarks
+    </h1>
+  </div>
+</div>
+<div class="row">
+  <div class="col">
+    {% if saved_entries %}
+    <ul>
     {% for bookmark in saved_entries %}
-    <li>{{ bookmark.entry.title }}</li>
+    <li>
+      <a href="#">{{ bookmark.entry.title }}</a>
+    </li>
     {% endfor %}
-</ul>
+    </ul>
+    {% else %}
+    <!-- need to get rid of weird spacing -->
+    You have no saved bookmarks!
+    {% endif %}
+  </div>
+</div>
+{% endblock %}
