@@ -91,6 +91,7 @@ class EntrySaveView(LoginRequiredMixin, generic.RedirectView):
       )
       bookmark_to_add.save()
     return self.request.META.get('HTTP_REFERER')
+    # return reverse_lazy('feedaggregator:entry_detail', kwargs = {'pk': entry_pk})
 
 class EntryUnsaveView(LoginRequiredMixin, generic.RedirectView):
   def get_redirect_url(self, *args, **kwargs):
@@ -108,6 +109,7 @@ class EntryUnsaveView(LoginRequiredMixin, generic.RedirectView):
 class EntrySavedView(LoginRequiredMixin, generic.ListView):
   context_object_name = "saved_entries"
   template_name = "feedaggregator/saved_entries.html"
+  paginate_by = 10 
   
   def get_queryset(self):
     return Bookmark.objects.filter(subscriber=self.request.user)
