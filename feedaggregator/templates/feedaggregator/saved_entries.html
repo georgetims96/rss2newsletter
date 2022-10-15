@@ -16,7 +16,7 @@ Bookmark List
     <ul>
     {% for bookmark in saved_entries %}
     <li>
-      <a href="#">{{ bookmark.entry.title }}</a>
+      <a href="{% url 'feedaggregator:entry_detail' pk=bookmark.entry.pk %}">{{ bookmark.entry.title }}</a>
     </li>
     {% endfor %}
     </ul>
