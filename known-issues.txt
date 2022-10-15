@@ -6,3 +6,4 @@
 - Need to add correct ordering for a ListView
 - ~Bug where if you add subscription in new window you can also add it in the main window. Result is two subscriptions.~
 - Bug with hitting 'back' for any view that incorporates RedirectView hack
+- Bootstrap formatting probably not optimized
