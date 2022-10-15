@@ -105,6 +105,13 @@ class EntryUnsaveView(LoginRequiredMixin, generic.RedirectView):
         bookmark_to_remove_qs.delete()
     return self.request.META.get('HTTP_REFERER')
 
+class EntrySavedView(LoginRequiredMixin, generic.ListView):
+  context_object_name = "saved_entries"
+  template_name = "feedaggregator/saved_entries.html"
+  
+  def get_queryset(self):
+    return Bookmark.objects.filter(subscriber=self.request.user)
+
 class EntryListView(LoginRequiredMixin, generic.ListView):
   model = Entry
   template_name = "feedaggregator/entry_list.html"
