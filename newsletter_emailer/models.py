@@ -12,7 +12,7 @@ class EmailHistory:
         self.recipients = recipients
         self.entries = entries
     
-    def send(self):
+    def send_fake(self):
         '''
         Method we will ulitmately use to send the included entries to the specified recipients
         '''
@@ -25,7 +25,7 @@ class EmailHistory:
             with open(f'{BASE_DIR}/pseudo_emails/{self.entries[0].feed.title}_most_recent.html', 'w') as f:
                 f.write(html_to_send)
     
-    def send_real(self):
+    def send(self):
         '''
         Method that leverages SendGrid API to actually send email to relevant recipients 
         '''
