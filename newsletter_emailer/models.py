@@ -7,7 +7,7 @@ from datetime import datetime
 import sendgrid
 from sendgrid.helpers.mail import Mail, Email, To, Content
 
-class Email:
+class EmailHistory:
     def __init__(self, recipients, entries):
         self.recipients = recipients
         self.entries = entries
@@ -31,7 +31,7 @@ class Email:
         '''
         sg = sendgrid.SendGridAPIClient(api_key=SENDGRID_API_KEY)
         from_email = Email(FROM_EMAIL)
-        content = Content("text/email", render_to_string('newsletter_emailer/email_template.html', {'entries': self.entries}))
+        content = Content("text/html", render_to_string('newsletter_emailer/email_template.html', {'entries': self.entries}))
         # TODO Add relevant daily digest date
         subject = f'{self.entries.first().feed.title} Daily Digest'
         # Send digest to each recipient
@@ -39,3 +39,6 @@ class Email:
             to_email = To(recipient.email)
             mail = Mail(from_email, to_email, subject, content)
             res = sg.client.mail.send.post(request_body=mail.get())
+        for entry in self.entries:
+            entry.sent = True
+            entry.save()

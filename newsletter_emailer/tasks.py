@@ -4,7 +4,7 @@ from __future__ import absolute_import, unicode_literals
 from celery import shared_task
 from feedaggregator.models import Feed, Entry
 from users.models import Subscriber
-from newsletter_emailer.models import Email
+from newsletter_emailer.models import EmailHistory
 from datetime import datetime, timedelta
 import pytz
 import sendgrid
@@ -21,5 +21,5 @@ def send_entries():
         rel_subscribers = Subscriber.objects.filter(subscriptions=feed) 
         # Loop over each entry, sending each one to the relevant recipients
         # Email(rel)
-        email_to_send = Email(rel_subscribers, entries_to_send)
-        email_to_send.send()
+        email_to_send = EmailHistory(rel_subscribers, entries_to_send)
+        email_to_send.send_real()
