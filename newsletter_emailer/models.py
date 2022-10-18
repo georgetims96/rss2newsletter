@@ -14,7 +14,7 @@ class EmailHistory:
     
     def send_fake(self):
         '''
-        Method we will ulitmately use to send the included entries to the specified recipients
+        (Faked) method to send the included entries to the specified recipients
         '''
         # Use template to render HTML that we will send/save
         html_to_send = render_to_string('newsletter_emailer/email_template.html', {'entries': self.entries})

@@ -18,8 +18,8 @@ def send_entries():
         # Get the relevant (i.e. unsent) entries
         entries_to_send = Entry.objects.filter(feed=feed, sent=False)
         # Get the subscribers to the feed
-        rel_subscribers = Subscriber.objects.filter(subscriptions=feed) 
-        # Loop over each entry, sending each one to the relevant recipients
-        # Email(rel)
-        email_to_send = EmailHistory(rel_subscribers, entries_to_send)
-        email_to_send.send()
+        if entries_to_send.count() > 0:
+            rel_subscribers = Subscriber.objects.filter(subscriptions=feed) 
+            # Loop over each entry, sending each one to the relevant recipients
+            email_to_send = EmailHistory(rel_subscribers, entries_to_send)
+            email_to_send.send()
