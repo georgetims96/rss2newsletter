@@ -3,16 +3,13 @@
 Bookmark List
 {% endblock %}
 {% block content %}
-<div class="row">
-  <div clas="col">
-    <h1>
-    Bookmarks
-    </h1>
-  </div>
-</div>
 {% include 'feedaggregator/partials/navbar.html' with selected='' %}
 <div class="row">
   <div class="col">
+<h1>
+    Bookmarks
+    </h1>
+  </div>
     {% if saved_entries %}
     <ul>
     {% for bookmark in saved_entries %}
