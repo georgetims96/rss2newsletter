@@ -1,12 +1,19 @@
 {% extends 'feedaggregator/partials/base.html' %}
 {% block title %}{{ entry.title }}{% endblock %}
 {% block content %}
-<h1> {{ entry.title }} </h1>
-{% if entry.author %}<h6 class="text-muted"><em>By {{ entry.author }}</em></h6>{% endif %}
-{% if entry in user_bookmarks %}
-<a href="{% url 'feedaggregator:unbookmark_entry' entry_pk=entry.pk %}" class="badge badge-danger badge-pill">-</a> 
-{% else %}
-<a href="{% url 'feedaggregator:bookmark_entry' entry_pk=entry.pk %}" class="badge badge-success badge-pill">+</a>
-{% endif %}
-{{ entry.body|safe }}
+
+{% include 'feedaggregator/partials/navbar.html' with selected='' %}
+<div class="row">
+    <div class="col">
+    <h1> {{ entry.title }} </h1>
+    {% if entry.author %}<h6 class="text-muted"><em>By {{ entry.author }}</em></h6>{% endif %}
+
+    {% if entry in user_bookmarks %}
+    <a href="{% url 'feedaggregator:unbookmark_entry' entry_pk=entry.pk %}" class="badge badge-info badge-pill"><i class="fa-solid fa-bookmark"></i></a> 
+    {% else %}
+    <a href="{% url 'feedaggregator:bookmark_entry' entry_pk=entry.pk %}" class="badge badge-info badge-pill"><i class="fa-regular fa-bookmark"></i></a>
+    {% endif %}
+    {{ entry.body|safe }}
+    </div>
+</div>
 {% endblock %}

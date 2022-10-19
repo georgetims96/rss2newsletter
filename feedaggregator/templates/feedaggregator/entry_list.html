@@ -3,16 +3,12 @@
 Entry List
 {% endblock %}
 {% block content %}
-<div class="row">
-  <div clas="col">
-    <h1>
-    {{ feed_title }}
-    </h1>
-  </div>
-</div>
 {% include 'feedaggregator/partials/navbar.html' with selected='' %}
 <div class="row">
   <div class="col">
+    <h1>
+    {{ feed_title }}
+    </h1>
     {% if entries %}
     <ul>
     {% for entry in entries %}
