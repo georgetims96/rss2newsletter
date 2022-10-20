@@ -144,4 +144,4 @@ class EntryDetailView(LoginRequiredMixin, generic.DetailView):
 
    
 class TestSBView(generic.TemplateView):
-  template_name = "feedaggregator/test.html"
+  template_name = "feedaggregator/discover2.html"
