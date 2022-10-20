@@ -9,19 +9,19 @@
                 <div class="sidebar-brand-text mx-3">ScrubStack</div>
             </a>
             <!-- Nav Item - Discover -->
-            <li class="nav-item active">
+            <li class="nav-item {% if selected == 'discover' %}active{% endif %}">
                 <a class="nav-link" href="charts.html">
                     <i class="fas fa-search"></i>
                     <span>Discover</span></a>
             </li>
 
             <!-- Nav Item - Subscription -->
-            <li class="nav-item">
+            <li class="nav-item {% if selected == 'view' %}active{% endif %}">
                 <a class="nav-link" href="tables.html">
                     <i class="fas fa-inbox"></i>
                     <span>Subscriptions</span></a>
             </li>
-            <li class="nav-item">
+            <li class="nav-item {% if selected == 'bookmarks' %}active{% endif %}">
                 <a class="nav-link" href="tables.html">
                     <i class="fas fa-bookmark"></i>
                     <span>Bookmarks</span></a>

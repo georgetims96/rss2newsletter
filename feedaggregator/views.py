@@ -29,7 +29,7 @@ class FeedFormView(LoginRequiredMixin, generic.CreateView):
     return context
 
 class FeedDiscoverView(LoginRequiredMixin, generic.ListView):
-  template_name = "feedaggregator/discover.html"
+  template_name = "feedaggregator/discover2.html"
   context_object_name = "feeds"
   queryset = Feed.objects.all()
   paginate_by = 6 
