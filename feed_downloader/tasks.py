@@ -26,11 +26,6 @@ def update_feeds():
         if Entry.objects.filter(feed=feed, title=new_entry.title).count() == 0:
           # If we haven't, we should save it
           new_entry.save()
-        else:
-          # Otherwise, it exists
-          print("exists")
-          print(new_entry.feed)
-          print(new_entry.title)
       except Exception as e:
         print(e)
     feed.last_sent = datetime.now(pytz.utc)

@@ -8,3 +8,4 @@
 - Bug with hitting 'back' for any view that incorporates RedirectView hack
 - Bootstrap formatting probably not optimized
 - Going back does not delete daved items
+- Seems that cron jobs are running excessively - FIX!!

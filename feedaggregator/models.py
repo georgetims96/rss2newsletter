@@ -52,7 +52,6 @@ class Feed(models.Model):
     # Generate datetime object from passed time struct
     # FIXME tz=pytz.utc does not work for some reason
     rel_datetime = datetime.fromtimestamp(mktime(st), tz=pytz.utc)
-    print(rel_datetime.tzinfo)
     return datetime.fromtimestamp(mktime(st), tz=pytz.utc)
 
   def filter_entries(self, entries_since_date):

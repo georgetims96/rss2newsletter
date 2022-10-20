@@ -143,3 +143,5 @@ class EntryDetailView(LoginRequiredMixin, generic.DetailView):
     return context
 
    
+class TestSBView(generic.TemplateView):
+  template_name = "feedaggregator/test.html"
