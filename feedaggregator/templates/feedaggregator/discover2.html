@@ -20,7 +20,7 @@
                                             <div class="h7 mb-0 font-weight-bold text-gray-800">
                                                 
                                                 {% if feeds %}
-                                                <ul class="list-group">
+                                                <ul class="list-group-flush">
                                                     {% for feed in feeds %}
                                                     <li class="list-group-item d-flex justify-content-between align-items-center">
                                                     <a href="{% url 'feedaggregator:entry_list' feed_pk=feed.pk %}">{{ feed }}</a>
