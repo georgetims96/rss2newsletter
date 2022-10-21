@@ -134,7 +134,7 @@ class EntryListView(LoginRequiredMixin, generic.ListView):
 
 class EntryDetailView(LoginRequiredMixin, generic.DetailView):
   model = Entry
-  template_name = "feedaggregator/entry_detail.html"
+  template_name = "feedaggregator/entry_detail2.html"
   context_object_name = "entry"
 
   def get_context_data(self, **kwargs):
