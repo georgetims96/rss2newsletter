@@ -3,11 +3,12 @@
 {% block sidebar %}
 {% include 'feedaggregator/partials/sidebar.html' with selected='discover' %}
 {% endblock %}
-{% block topbar %}
-{% include 'feedaggregator/partials/topbar.html' with topbar_title='Discover' %}
-{% endblock %}
 {% block content %}
 <!-- Page Heading -->
+                    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                        <h1 class="h2 mb-0 text-gray-800">{{ feed_title }}</h1>
+                    </div>
+
                     <!-- Content Row -->
                     <div class="row">
 
@@ -19,24 +20,19 @@
                                         <div class="col mr-2">
                                             <div class="h7 mb-0 font-weight-bold text-gray-800">
                                                 
-                                                {% if feeds %}
-                                                <ul class="list-group">
-                                                    {% for feed in feeds %}
-                                                    <li class="list-group-item d-flex justify-content-between align-items-center">
-                                                    <a href="{% url 'feedaggregator:entry_list' feed_pk=feed.pk %}">{{ feed }}</a>
-                                                    {% if feed in user_subscriptions %}
-                                                        <a href="{% url 'feedaggregator:unsubscribe_feed' feed_pk=feed.pk %}" class="badge badge-danger badge-pill">-</a> 
-                                                    {% else %}
-                                                        <a href="{% url 'feedaggregator:subscribe_feed' feed_pk=feed.pk %}" class="badge badge-success badge-pill">+</a>
-                                                    {% endif %}
-                                                    </span>
+                                                {% if entries %}
+                                                <ul>
+                                                    {% for entry in entries %}
+                                                    <li>
+                                                        <a href="{% url 'feedaggregator:entry_detail' pk=entry.pk %}">{{ entry.title }}</a>
                                                     </li>
                                                     {% endfor %}
                                                 </ul>
-                                                {% include 'feedaggregator/partials/pagination.html' %}
                                                 {% else %}
-                                                No feeds yet :(
+                                                <!-- need to get rid of weird spacing -->
+                                                There are no entries for this feed :(
                                                 {% endif %}
+                                                {% include 'feedaggregator/partials/pagination.html' %}
                                             </div>
                                         </div>
                                     </div>

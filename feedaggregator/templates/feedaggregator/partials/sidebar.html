@@ -10,14 +10,14 @@
             </a>
             <!-- Nav Item - Discover -->
             <li class="nav-item {% if selected == 'discover' %}active{% endif %}">
-                <a class="nav-link" href="charts.html">
+                <a class="nav-link" href="{% url 'feedaggregator:discover_feeds' %}">
                     <i class="fas fa-search"></i>
                     <span>Discover</span></a>
             </li>
 
             <!-- Nav Item - Subscription -->
             <li class="nav-item {% if selected == 'view' %}active{% endif %}">
-                <a class="nav-link" href="tables.html">
+                <a class="nav-link" href="{% url 'feedaggregator:view_feeds' %}">
                     <i class="fas fa-inbox"></i>
                     <span>Subscriptions</span></a>
             </li>

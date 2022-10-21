@@ -116,7 +116,7 @@ class EntrySavedView(LoginRequiredMixin, generic.ListView):
 
 class EntryListView(LoginRequiredMixin, generic.ListView):
   model = Entry
-  template_name = "feedaggregator/entry_list.html"
+  template_name = "feedaggregator/entry_list2.html"
   context_object_name = "entries"
   ordering = ['-pk']
   paginate_by = 10 
