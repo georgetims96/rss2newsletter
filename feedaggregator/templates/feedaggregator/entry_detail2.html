@@ -10,6 +10,11 @@
 <!-- Page Heading -->
 
                     <!-- Content Row -->
+                    <div class="row ml-1 mb-2 text-muted font-italic">
+                        {% if entry.author %}
+                            By {{entry.author}}
+                        {% endif %}
+                    </div>
                     <div class="row">
 
                         <!-- Earnings (Monthly) Card Example -->
