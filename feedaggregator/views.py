@@ -40,7 +40,7 @@ class FeedDiscoverView(LoginRequiredMixin, generic.ListView):
     return context
 
 class FeedSubscriptionView(LoginRequiredMixin, generic.ListView):
-  template_name = "feedaggregator/subscriptions.html"
+  template_name = "feedaggregator/subscriptions2.html"
   context_object_name = "subscriptions"
 
   def get_queryset(self):
@@ -108,7 +108,7 @@ class EntryUnsaveView(LoginRequiredMixin, generic.RedirectView):
 
 class EntrySavedView(LoginRequiredMixin, generic.ListView):
   context_object_name = "saved_entries"
-  template_name = "feedaggregator/saved_entries.html"
+  template_name = "feedaggregator/saved_entries2.html"
   paginate_by = 10 
   
   def get_queryset(self):
