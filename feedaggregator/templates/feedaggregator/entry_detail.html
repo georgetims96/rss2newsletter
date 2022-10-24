@@ -1,19 +1,35 @@
-{% extends 'feedaggregator/partials/base.html' %}
-{% block title %}{{ entry.title }}{% endblock %}
+{% extends 'feedaggregator/partials/base2.html' %}
+{% block title %}{{ feed_title }}{% endblock %}
+{% block sidebar %}
+{% include 'feedaggregator/partials/sidebar.html' with selected='discover' %}
+{% endblock %}
+{% block topbar %}
+{% include 'feedaggregator/partials/topbar.html' with topbar_title=entry.title %}
+{% endblock %}
 {% block content %}
+<!-- Page Heading -->
 
-{% include 'feedaggregator/partials/navbar.html' with selected='' %}
-<div class="row">
-    <div class="col">
-    <h1> {{ entry.title }} </h1>
-    {% if entry.author %}<h6 class="text-muted"><em>By {{ entry.author }}</em></h6>{% endif %}
+                    <!-- Content Row -->
+                    <div class="row ml-1 mb-2 text-muted font-italic">
+                        {% if entry.author %}
+                            By {{entry.author}}
+                        {% endif %}
+                    </div>
+                    <div class="row">
 
-    {% if entry in user_bookmarks %}
-    <a href="{% url 'feedaggregator:unbookmark_entry' entry_pk=entry.pk %}" class="badge badge-info badge-pill"><i class="fa-solid fa-bookmark"></i></a> 
-    {% else %}
-    <a href="{% url 'feedaggregator:bookmark_entry' entry_pk=entry.pk %}" class="badge badge-info badge-pill"><i class="fa-regular fa-bookmark"></i></a>
-    {% endif %}
-    {{ entry.body|safe }}
-    </div>
-</div>
+                        <!-- Earnings (Monthly) Card Example -->
+                        <div class="col-xl-12 col-md-12 mb-4">
+                            <div class="card shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="h7 mb-0 font-weight-bold text-gray-800">
+                                                {{ entry.body|safe }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 {% endblock %}
