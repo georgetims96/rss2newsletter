@@ -29,7 +29,7 @@ class FeedFormView(LoginRequiredMixin, generic.CreateView):
     return context
 
 class FeedDiscoverView(LoginRequiredMixin, generic.ListView):
-  template_name = "feedaggregator/discover2.html"
+  template_name = "feedaggregator/discover.html"
   context_object_name = "feeds"
   queryset = Feed.objects.all()
   paginate_by = 6 
@@ -40,7 +40,7 @@ class FeedDiscoverView(LoginRequiredMixin, generic.ListView):
     return context
 
 class FeedSubscriptionView(LoginRequiredMixin, generic.ListView):
-  template_name = "feedaggregator/subscriptions2.html"
+  template_name = "feedaggregator/subscriptions.html"
   context_object_name = "subscriptions"
 
   def get_queryset(self):
@@ -108,7 +108,7 @@ class EntryUnsaveView(LoginRequiredMixin, generic.RedirectView):
 
 class EntrySavedView(LoginRequiredMixin, generic.ListView):
   context_object_name = "saved_entries"
-  template_name = "feedaggregator/saved_entries2.html"
+  template_name = "feedaggregator/saved_entries.html"
   paginate_by = 10 
   
   def get_queryset(self):
@@ -116,7 +116,7 @@ class EntrySavedView(LoginRequiredMixin, generic.ListView):
 
 class EntryListView(LoginRequiredMixin, generic.ListView):
   model = Entry
-  template_name = "feedaggregator/entry_list2.html"
+  template_name = "feedaggregator/entry_list.html"
   context_object_name = "entries"
   ordering = ['-pk']
   paginate_by = 10 
@@ -134,14 +134,10 @@ class EntryListView(LoginRequiredMixin, generic.ListView):
 
 class EntryDetailView(LoginRequiredMixin, generic.DetailView):
   model = Entry
-  template_name = "feedaggregator/entry_detail2.html"
+  template_name = "feedaggregator/entry_detail.html"
   context_object_name = "entry"
 
   def get_context_data(self, **kwargs):
     context = super().get_context_data(**kwargs)
     context["user_bookmarks"] = self.request.user.saved_entries.all()
     return context
-
-   
-class TestSBView(generic.TemplateView):
-  template_name = "feedaggregator/discover2.html"
