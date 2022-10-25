@@ -4,12 +4,17 @@
 {% include 'feedaggregator/partials/sidebar.html' with selected='discover' %}
 {% endblock %}
 {% block topbar %}
-{% include 'feedaggregator/partials/topbar.html' with topbar_title=entry.title %}
+{% include 'feedaggregator/partials/topbar.html' with topbar_title=entry.feed.title %}
 {% endblock %}
 {% block content %}
 <!-- Page Heading -->
 
                     <!-- Content Row -->
+                    <div class="row h3 ml-1 mb-2">
+                        {% if entry.title %}
+                            {{entry.title}}
+                        {% endif %}
+                    </div>
                     <div class="row ml-1 mb-2 text-muted font-italic">
                         {% if entry.author %}
                             By {{entry.author}}
