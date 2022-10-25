@@ -23,7 +23,13 @@
                                 <div class="card-body">
                                     <div class="row no-gutters align-items-center">
                                         <div class="col mr-2">
-                                            <div class="h7 mb-0 font-weight-bold text-gray-800">
+                                            <div class="mb-0 text-gray-800">
+                                                <!-- Move into external CSS file-->
+                                                <style>
+                                                    blockquote {
+                                                        font-style: italic;
+                                                    }
+                                                </style>
                                                 {{ entry.body|safe }}
                                             </div>
                                         </div>
