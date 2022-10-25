@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 from pathlib import Path
 import os
 from django.urls import reverse_lazy
+from celery.schedules import crontab
 
 import newsletter_emailer.email_settings as es
 
@@ -161,12 +162,12 @@ CELERY_RESULT_BACKEND = os.environ.get("CELERY_BROKER", "redis://redis:6379/0")
 CELERY_BEAT_SCHEDULE = {
   "scheduled_update_feeds_task": {
     "task": "feed_downloader.tasks.update_feeds",
-    "schedule": 240.0,
+    "schedule": crontab(minute='0', hour='*/1'),
     "args": (),
   },
   "scheduled_send_entries_task": {
     "task": "newsletter_emailer.tasks.send_entries",
-    "schedule": 300.0,
+    "schedule": crontab(minute='0', hour='*/1'),
     "args": (),
   }
 }
