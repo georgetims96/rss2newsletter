@@ -18,12 +18,12 @@
                                 <div class="card-body">
                                     <div class="row no-gutters align-items-center">
                                         <div class="col mr-2">
-                                            <div class="h7 mb-0 font-weight-bold text-gray-800">
+                                            <div class="mb-0 font-weight-bold text-gray-800">
                                                 
                                                 {% if entries %}
-                                                <ul>
+                                                <ul class="list-group-flush">
                                                     {% for entry in entries %}
-                                                    <li>
+                                                    <li class="list-group-item">
                                                         <a href="{% url 'feedaggregator:entry_detail' pk=entry.pk %}">{{ entry.title }}</a>
                                                     </li>
                                                     {% endfor %}

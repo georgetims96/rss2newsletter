@@ -20,9 +20,9 @@
                                             <div class="h7 mb-0 font-weight-bold text-gray-800">
                                                
                                                 {% if saved_entries %}
-                                                <ul>
+                                                <ul class="list-group-flush">
                                                 {% for bookmark in saved_entries %}
-                                                <li>
+                                                <li class="list-group-item">
                                                 <a href="{% url 'feedaggregator:entry_detail' pk=bookmark.entry.pk %}">{{ bookmark.entry.title }}</a>
                                                 </li>
                                                 {% endfor %}
