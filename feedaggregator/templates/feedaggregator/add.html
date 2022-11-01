@@ -1,11 +1,16 @@
 {% extends 'feedaggregator/partials/base.html' %}
 {% block title %}Add Feed{% endblock %}
+{% block sidebar %}
+{% include 'feedaggregator/partials/sidebar.html' with selected='' %}
+{% endblock %}
+{% block topbar %}
+{% include 'feedaggregator/partials/topbar.html' with topbar_title='Add Feed' %}
+{% endblock %}
 {% load crispy_forms_tags %}
 {% block content %}
-<h1>Hello, {{ user_first_name }}</h1>
 <div class="card">
   <div class="card-body">
-    <div class="card-title"><h5>Add an RSS Feed</h5></div>
+    <div class="card-title"><h5>Enter Feed URL</h5></div>
       <div class="card-text">
         <form method="post">
           {% csrf_token %}
