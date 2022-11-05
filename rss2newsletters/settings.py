@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'feed_downloader',
     'django_celery_beat',
     'crispy_forms',
+    'rest_framework'
 ]
 
 MIDDLEWARE = [
