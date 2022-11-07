@@ -61,17 +61,14 @@
                                 if (http.readyState == 4 && http.status == 200) {
                                     alert(http.responseText);
                                 }
-                                else{
-                                    alert(http.responseText);
-                                }
                             }
 
                             http.send(
                                 JSON.stringify({
-                                    entry: e
+                                    entry: e,
+                                    subscriber: {{ request.user.id }}
                                 })
                             );
-                            alert("end");
 
                         }
                         document.querySelectorAll('.bookmark-btn').forEach(btn => {
