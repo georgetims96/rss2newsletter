@@ -174,3 +174,10 @@ CELERY_BEAT_SCHEDULE = {
 }
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
+
+# FIXME when in prod, need proper authentication
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.BasicAuthentication',
+    ]
+}
