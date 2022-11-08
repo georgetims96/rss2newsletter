@@ -23,7 +23,7 @@
                             By {{entry.author}} 
                         {% endif %}
                         </div>
-                        <span class="badge {% if user_did_bookmark %}badge-danger{% else %}badge-success{% endif %} badge-pill" id="bookmark_btn">+</span>
+                        <span class="badge {% if user_did_bookmark %}badge-danger{% else %}badge-success{% endif %} badge-pill" id="bookmark_btn">{% if user_did_bookmark %}-{% else %}+{% endif %}</span>
                     </div>
                     <div class="row">
 
@@ -51,18 +51,14 @@
                         </div>
                     </div>
                     <script>
+                        var bookmark_id = '{{bookmark_id}}';
+
                         function bookmark_entry(e) {
                             var http = new XMLHttpRequest();
                             // FIXME figure out how to do this with URL tag
                             var url = '/api/bookmarks/';
                             var method = "POST";
-                            for (var i = 0; i < e.classList.length; i++) {
-                                if (e.classList[i] == "badge-danger") {
-                                    method = "DELETE";
-                                    url += '{{ bookmark_id }}';
-                                }   
-                            }
-                            alert(method);
+                            
                             http.open(method, url, true);
 
                             http.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
@@ -70,10 +66,12 @@
                             
                             http.onreadystatechange = function () {
                                 if (http.readyState == 4 && http.status == 201) {
-                                    alert(http.responseText);
+                                    e.target.classList.remove('badge-success');
+                                    e.target.classList.add('badge-danger');
+                                    e.target.innerHTML = "-";
+                                    bookmark_id = JSON.parse(http.responseText)['id'];
                                 }
                             }
-                            alert(e.id);
 
                             http.send(
                                 JSON.stringify({
@@ -83,8 +81,39 @@
                             );
 
                         }
+                        function unbookmark_entry(e) {
+                            var http = new XMLHttpRequest();
+                            // FIXME figure out how to do this with URL tag
+                            var url = '/api/bookmarks/' + bookmark_id + '/';
+                            var method = "DELETE";
+                            
+                            http.open(method, url, true);
+
+                            http.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
+                            http.setRequestHeader('X-CSRFToken', '{{ csrf_token }}');
+                            
+                            http.onreadystatechange = function () {
+                                if (http.readyState == 4 && http.status == 204) {
+                                    e.target.classList.remove('badge-danger');
+                                    e.target.classList.add('badge-success');
+                                    e.target.innerHTML = "+";
+                                }
+                            }
+
+                            http.send(
+                                JSON.stringify({
+                                    entry: {{entry.id}},
+                                    subscriber: {{ request.user.id }}
+                                })
+                            )
+                        }
+
                         document.getElementById('bookmark_btn').addEventListener('click', e => {
-                            bookmark_entry(e.target);
+                            if (e.target.innerHTML == "+") {
+                                bookmark_entry(e);
+                            } else {
+                                unbookmark_entry(e);
+                            }
                         });
                     </script>
 {% endblock %}

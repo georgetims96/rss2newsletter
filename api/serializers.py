@@ -8,7 +8,7 @@ class BookmarkSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Bookmark
-        fields = ['entry', 'subscriber']
+        fields = ['id', 'entry', 'subscriber']
         depth = 1
     
     def create(self, validated_data):
