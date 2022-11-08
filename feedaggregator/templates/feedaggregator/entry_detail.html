@@ -17,11 +17,13 @@
                             {{entry.title}}
                         {% endif %}
                     </div>
-                    <div class="row ml-1 mb-2 text-muted font-italic">
+                    <div class="row ml-1 mb-2 ">
+                        <div class="text-muted font-italic">
                         {% if entry.author %}
                             By {{entry.author}} 
                         {% endif %}
-                        <button type="button" class="btn btn-primary py-0 px-2 ml-1 bookmark-btn" id="{{entry.id}}"><i class="fas fa-bookmark"></i></button>
+                        </div>
+                        <span class="badge {% if user_did_bookmark %}badge-danger{% else %}badge-success{% endif %} badge-pill" id="bookmark_btn">+</span>
                     </div>
                     <div class="row">
 
@@ -53,29 +55,36 @@
                             var http = new XMLHttpRequest();
                             // FIXME figure out how to do this with URL tag
                             var url = '/api/bookmarks/';
-                            http.open('POST', url, true);
+                            var method = "POST";
+                            for (var i = 0; i < e.classList.length; i++) {
+                                if (e.classList[i] == "badge-danger") {
+                                    method = "DELETE";
+                                    url += '{{ bookmark_id }}';
+                                }   
+                            }
+                            alert(method);
+                            http.open(method, url, true);
 
                             http.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
                             http.setRequestHeader('X-CSRFToken', '{{ csrf_token }}');
                             
                             http.onreadystatechange = function () {
-                                if (http.readyState == 4 && http.status == 200) {
+                                if (http.readyState == 4 && http.status == 201) {
                                     alert(http.responseText);
                                 }
                             }
+                            alert(e.id);
 
                             http.send(
                                 JSON.stringify({
-                                    entry: e,
+                                    entry: {{entry.id}},
                                     subscriber: {{ request.user.id }}
                                 })
                             );
 
                         }
-                        document.querySelectorAll('.bookmark-btn').forEach(btn => {
-                            btn.addEventListener('click', e => {
-                                bookmark_entry(e.target.id);
-                            })
+                        document.getElementById('bookmark_btn').addEventListener('click', e => {
+                            bookmark_entry(e.target);
                         });
                     </script>
 {% endblock %}

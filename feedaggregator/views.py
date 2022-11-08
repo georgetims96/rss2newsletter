@@ -139,5 +139,8 @@ class EntryDetailView(LoginRequiredMixin, generic.DetailView):
 
   def get_context_data(self, **kwargs):
     context = super().get_context_data(**kwargs)
-    context["user_bookmarks"] = self.request.user.saved_entries.all()
+    print(self.get_queryset())
+    bm = Bookmark.objects.filter(subscriber=self.request.user, entry=context["entry"])
+    context["user_did_bookmark"] = True if bm.count() else False
+    context['bookmark_id'] = bm.first().id if bm.count() else ""
     return context
