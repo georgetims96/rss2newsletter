@@ -17,19 +17,3 @@ class BookmarkSerializer(serializers.ModelSerializer):
             entry=validated_data['entry'],
             subscriber=validated_data['subscriber']
         )
-
-class SubscriptionSerializer(serializers.ModelSerializer):
-    user = serializers.PrimaryKeyRelatedField(many=False, queryset=Subscriber.objects.all())
-    feed = serializers.PrimaryKeyRelatedField(many=False, queryset=Feed.objects.all())
-
-    class Meta:
-        model = Subscription
-        fields = ['id', 'user', 'feed']
-        depth = 1
-    
-    def create(self, validated_data):
-        return Subscription.objects.create(
-            user=validated_data['user'],
-            feed=validated_data['feed'],
-            date_subscribed=datetime.now(timezone.utc)
-        )
