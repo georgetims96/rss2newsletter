@@ -8,21 +8,20 @@ import sendgrid
 from sendgrid.helpers.mail import Mail, Email, To, Content
 
 class EmailHistory:
-    def __init__(self, recipients, entries):
+    def __init__(self, recipients, entry):
         self.recipients = recipients
-        self.entries = entries
+        self.entry = entry
     
     def send_fake(self):
         '''
         (Faked) method to send the included entries to the specified recipients
         '''
         # Use template to render HTML that we will send/save
-        html_to_send = render_to_string('newsletter_emailer/email_template.html', {'entries': self.entries})
-        for entry in self.entries:
-            entry.sent = True
-            entry.save()
-        if self.entries:
-            with open(f'{BASE_DIR}/pseudo_emails/{self.entries[0].feed.title}_most_recent.html', 'w') as f:
+        html_to_send = render_to_string('newsletter_emailer/email_template.html', {'entry': self.entry})
+        self.entry.sent = True
+        self.entry.save()
+        if self.entry:
+            with open(f'{BASE_DIR}/pseudo_emails/{self.entry.feed.title}_most_recent.html', 'w') as f:
                 f.write(html_to_send)
     
     def send(self):
@@ -31,14 +30,13 @@ class EmailHistory:
         '''
         sg = sendgrid.SendGridAPIClient(api_key=SENDGRID_API_KEY)
         from_email = Email(FROM_EMAIL)
-        content = Content("text/html", render_to_string('newsletter_emailer/email_template.html', {'entries': self.entries}))
+        content = Content("text/html", render_to_string('newsletter_emailer/email_template.html', {'entry': self.entry}))
         # TODO Add relevant daily digest date
-        subject = f'{self.entries.first().feed.title} Daily Digest'
+        subject = f'{self.entry.title} - {self.entry.feed.title}'
         # Send digest to each recipient
         for recipient in self.recipients:
             to_email = To(recipient.email)
             mail = Mail(from_email, to_email, subject, content)
             res = sg.client.mail.send.post(request_body=mail.get())
-        for entry in self.entries:
-            entry.sent = True
-            entry.save()
+        self.entry.sent = True
+        self.entry.save()

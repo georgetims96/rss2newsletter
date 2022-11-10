@@ -1,10 +1,23 @@
 <body style="background-color: black;">
-{% for entry in entries %}
+<style>
+    img {
+        text-align: center;
+    }
+    a {
+        color: white;
+    }
+    blockquote {
+        font-style: italic;
+        border-left: 5px solid lightblue;
+        padding-left: 15px;
+    }
+</style>
+<div style="width: 75%; margin: 0 auto;">
 <h1 style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 36; color: white;">{{ entry.title}} </h1>
 <div style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 16; color: white;">
 {% autoescape off %}
     {{ entry.body }}
 {% endautoescape %}
 </div>
-{% endfor %}
+</div>
 </body>
