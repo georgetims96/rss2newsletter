@@ -1,8 +1,10 @@
+<body style="background-color: black;">
 {% for entry in entries %}
-<h1 style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">{{ entry.title}} </h1>
-<div style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">
+<h1 style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 36; color: white;">{{ entry.title}} </h1>
+<div style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 16; color: white;">
 {% autoescape off %}
     {{ entry.body }}
 {% endautoescape %}
 </div>
 {% endfor %}
+</body>
