@@ -46,66 +46,6 @@ class FeedSubscriptionView(LoginRequiredMixin, generic.ListView):
   def get_queryset(self):
     return Subscription.objects.filter(user=self.request.user)
 
-class FeedSubscribeView(LoginRequiredMixin, generic.RedirectView):
-
-  def get_redirect_url(self, *args, **kwargs):
-    feed_pk = kwargs.get("feed_pk", None)
-    rel_user = self.request.user
-    rel_feed = Feed.objects.get(pk=feed_pk)
-    if rel_feed and not Subscription.objects.filter(user=rel_user, feed=rel_feed).exists():
-      Subscription.objects.create(
-        user=self.request.user,
-        feed=rel_feed,
-        date_subscribed=datetime.now(timezone.utc)
-      )
-      rel_feed.num_subscribers = F('num_subscribers') + 1
-      rel_feed.save()
-    return self.request.META.get('HTTP_REFERER')
-  
-  
-class FeedUnsubscribeView(LoginRequiredMixin, generic.RedirectView):
-
-  def get_redirect_url(self, *args, **kwargs):
-    feed_pk = kwargs.get("feed_pk", None)
-    rel_feed = Feed.objects.get(pk=feed_pk)
-    if rel_feed:
-      subscription_to_remove = Subscription.objects.get(
-        user=self.request.user,
-        feed__pk=feed_pk
-      )
-      subscription_to_remove.delete()
-      # FIXME could I override delete method/do signal
-      # FIXME is this the best way of dealing with this
-      rel_feed.num_subscribers = F('num_subscribers') - 1
-      rel_feed.save()
-    return self.request.META.get('HTTP_REFERER')
-
-class EntrySaveView(LoginRequiredMixin, generic.RedirectView):
-  def get_redirect_url(self, *args, **kwargs):
-    entry_pk = kwargs.get("entry_pk", None)
-    rel_entry = Entry.objects.get(pk=entry_pk)
-    if rel_entry:
-      bookmark_to_add = Bookmark(
-        subscriber = self.request.user,
-        entry = rel_entry
-      )
-      bookmark_to_add.save()
-    return self.request.META.get('HTTP_REFERER')
-    # return reverse_lazy('feedaggregator:entry_detail', kwargs = {'pk': entry_pk})
-
-class EntryUnsaveView(LoginRequiredMixin, generic.RedirectView):
-  def get_redirect_url(self, *args, **kwargs):
-    entry_pk = kwargs.get("entry_pk", None)
-    rel_entry = Entry.objects.get(pk=entry_pk)
-    if rel_entry:
-      bookmark_to_remove_qs = Bookmark.objects.filter(
-        subscriber = self.request.user,
-        entry = rel_entry
-      )
-      if bookmark_to_remove_qs.count() > 0:
-        bookmark_to_remove_qs.delete()
-    return self.request.META.get('HTTP_REFERER')
-
 class EntrySavedView(LoginRequiredMixin, generic.ListView):
   context_object_name = "saved_entries"
   template_name = "feedaggregator/saved_entries.html"
