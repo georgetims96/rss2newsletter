@@ -107,7 +107,7 @@ class Entry(models.Model):
 class Subscription(models.Model):
   user = models.ForeignKey(Subscriber, on_delete=models.CASCADE)
   feed = models.ForeignKey(Feed, on_delete=models.CASCADE)
-  date_subscribed = models.DateTimeField()
+  date_subscribed = models.DateTimeField(auto_now_add=True)
 
   def __str__(self):
     return self.feed.title

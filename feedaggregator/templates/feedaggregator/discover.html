@@ -26,9 +26,9 @@
                                                     <li class="list-group-item d-flex justify-content-between align-items-center">
                                                     <a href="{% url 'feedaggregator:entry_list' feed_pk=feed.pk %}">{{ feed }}</a>
                                                     {% if feed in user_subscriptions %}
-                                                        <a href="{% url 'feedaggregator:unsubscribe_feed' feed_pk=feed.pk %}" class="badge badge-danger badge-pill subscribe_btn">-{{ feed|feedToSubId:user.id }}</a> 
+                                                        <span class="badge badge-danger badge-pill subscribe_btn" id="{{ feed|feedToSubId:user.id }}">-</a> 
                                                     {% else %}
-                                                        <a href="{% url 'feedaggregator:subscribe_feed' feed_pk=feed.pk %}" class="badge badge-success badge-pill">+</a>
+                                                        <span class="badge badge-success badge-pill subscribe_btn" id="{{ feed.pk }}">+</a>
                                                     {% endif %}
                                                     </li>
                                                     {% endfor %}
@@ -45,10 +45,10 @@
                         </div>
                     </div>
                     <script>
-                        var bookmark_id = '{{bookmark_id}}';
 
                         function subscribe_feed(e) {
                             var http = new XMLHttpRequest();
+
                             // FIXME figure out how to do this with URL tag
                             var url = '/api/subscriptions/';
                             var method = "POST";
@@ -69,8 +69,8 @@
 
                             http.send(
                                 JSON.stringify({
-                                    entry: {{entry.id}},
-                                    subscriber: {{ request.user.id }}
+                                    feed: e.target.id,
+                                    user: {{ request.user.id }}
                                 })
                             );
 
@@ -78,7 +78,7 @@
                         function unsubscribe_feed(e) {
                             var http = new XMLHttpRequest();
                             // FIXME figure out how to do this with URL tag
-                            var url = '/api/bookmarks/' + bookmark_id + '/';
+                            var url = '/api/subscriptions/' + e.target.id + '/';
                             var method = "DELETE";
                             
                             http.open(method, url, true);
@@ -91,23 +91,25 @@
                                     e.target.classList.remove('badge-danger');
                                     e.target.classList.add('badge-success');
                                     e.target.innerHTML = "+";
+                                    alert(http.responseText);
                                 }
                             }
 
                             http.send(
                                 JSON.stringify({
-                                    entry: {{entry.id}},
-                                    subscriber: {{ request.user.id }}
+                                    subscription: e.target.id,
                                 })
                             )
                         }
-
-                        document.getElementById('bookmark_btn').addEventListener('click', e => {
-                            if (e.target.innerHTML == "+") {
-                                bookmark_entry(e);
-                            } else {
-                                unbookmark_entry(e);
-                            }
-                        });
+                        document.querySelectorAll('.subscribe_btn').forEach((btn) => {
+                                btn.addEventListener('click', e => {
+                                if (e.target.innerHTML == "+") {
+                                    subscribe_feed(e);
+                                } else {
+                                    unsubscribe_feed(e);
+                                }
+                                })
+                            }   
+                        );
                     </script>
 {% endblock %}
