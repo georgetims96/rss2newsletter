@@ -26,9 +26,9 @@
                                                     <li class="list-group-item d-flex justify-content-between align-items-center">
                                                     <a href="{% url 'feedaggregator:entry_list' feed_pk=feed.pk %}">{{ feed }}</a>
                                                     {% if feed in user_subscriptions %}
-                                                        <span class="badge badge-danger badge-pill subscribe_btn" id="{{ feed|feedToSubId:user.id }}">-</a> 
+                                                        <span class="badge badge-danger badge-pill subscribe_btn" id="{{ feed|feedToSubId:user.id }}">-</span> 
                                                     {% else %}
-                                                        <span class="badge badge-success badge-pill subscribe_btn" id="{{ feed.pk }}">+</a>
+                                                        <span class="badge badge-success badge-pill subscribe_btn" id='{{ feed.pk }}'>+</span>
                                                     {% endif %}
                                                     </li>
                                                     {% endfor %}
@@ -63,7 +63,9 @@
                                     e.target.classList.remove('badge-success');
                                     e.target.classList.add('badge-danger');
                                     e.target.innerHTML = "-";
-                                    bookmark_id = JSON.parse(http.responseText)['id'];
+                                    console.log(http.responseText);
+                                    var newEId = JSON.parse(http.responseText)['id'];
+                                    e.target.id = newEId;
                                 }
                             }
 
@@ -87,11 +89,15 @@
                             http.setRequestHeader('X-CSRFToken', '{{ csrf_token }}');
                             
                             http.onreadystatechange = function () {
-                                if (http.readyState == 4 && http.status == 204) {
+                                if (http.readyState == 4 && http.status == 201) {
+                                    // FIXME is this right httpstatus given it's a delete?
+                                    // Generally it's 204, but this has response content
                                     e.target.classList.remove('badge-danger');
                                     e.target.classList.add('badge-success');
                                     e.target.innerHTML = "+";
-                                    alert(http.responseText);
+                                    // FIXME this is so bad. Need to figure out what's going on here
+                                    var fid = JSON.parse(JSON.parse(http.responseText));
+                                    e.target.id = fid['feed'];
                                 }
                             }
 
@@ -103,7 +109,8 @@
                         }
                         document.querySelectorAll('.subscribe_btn').forEach((btn) => {
                                 btn.addEventListener('click', e => {
-                                if (e.target.innerHTML == "+") {
+                                var buttonType = e.target.innerHTML;
+                                if (buttonType === "+") {
                                     subscribe_feed(e);
                                 } else {
                                     unsubscribe_feed(e);

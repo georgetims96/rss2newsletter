@@ -5,4 +5,5 @@ register = template.Library()
 
 @register.filter
 def feedToSubId(value, arg):
-    return Subscription.objects.get(feed=value, user__id=arg).id
+    # FIXME GET should work given unique constraint, which I need to add
+    return Subscription.objects.filter(feed=value, user__id=arg).first().id
