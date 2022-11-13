@@ -17,3 +17,8 @@ class BookmarkSerializer(serializers.ModelSerializer):
             entry=validated_data['entry'],
             subscriber=validated_data['subscriber']
         )
+
+class SubscriptionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Subscription
+        fields = ['id', 'feed', 'user']

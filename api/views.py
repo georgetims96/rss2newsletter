@@ -1,7 +1,7 @@
 from django.shortcuts import render
-from feedaggregator.models import Bookmark
+from feedaggregator.models import Bookmark, Subscription
 from rest_framework import viewsets
-from api.serializers import BookmarkSerializer
+from api.serializers import BookmarkSerializer, SubscriptionSerializer
 
 class BookmarkViewSet(viewsets.ModelViewSet):
     queryset = Bookmark.objects.all()
@@ -11,3 +11,6 @@ class BookmarkViewSet(viewsets.ModelViewSet):
         self.queryset = self.queryset.filter(subscriber=request.user)
         return super().list(self, request, **kwargs)
     
+class SubscriptionViewSet(viewsets.ModelViewSet):
+    queryset = Subscription.objects.all()
+    serializer_class = SubscriptionSerializer
