@@ -37,4 +37,79 @@
                             </div>
                         </div>
                     </div>
+                    <script>
+
+                        function subscribe_feed(e) {
+                            var http = new XMLHttpRequest();
+
+                            // FIXME figure out how to do this with URL tag
+                            var url = '/api/subscriptions/';
+                            var method = "POST";
+                            
+                            http.open(method, url, true);
+
+                            http.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
+                            http.setRequestHeader('X-CSRFToken', '{{ csrf_token }}');
+                            
+                            http.onreadystatechange = function () {
+                                if (http.readyState == 4 && http.status == 201) {
+                                    e.target.classList.remove('badge-success');
+                                    e.target.classList.add('badge-danger');
+                                    e.target.innerHTML = "-";
+                                    console.log(http.responseText);
+                                    var newEId = JSON.parse(http.responseText)['id'];
+                                    e.target.id = newEId;
+                                }
+                            }
+
+                            http.send(
+                                JSON.stringify({
+                                    feed: e.target.id,
+                                    user: {{ request.user.id }}
+                                })
+                            );
+
+                        }
+                        function unsubscribe_feed(e) {
+                            var http = new XMLHttpRequest();
+                            // FIXME figure out how to do this with URL tag
+                            var url = '/api/subscriptions/' + e.target.id + '/';
+                            var method = "DELETE";
+                            
+                            http.open(method, url, true);
+
+                            http.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
+                            http.setRequestHeader('X-CSRFToken', '{{ csrf_token }}');
+                            
+                            http.onreadystatechange = function () {
+                                if (http.readyState == 4 && http.status == 201) {
+                                    // FIXME is this right httpstatus given it's a delete?
+                                    // Generally it's 204, but this has response content
+                                    e.target.classList.remove('badge-danger');
+                                    e.target.classList.add('badge-success');
+                                    e.target.innerHTML = "+";
+                                    // FIXME this is so bad. Need to figure out what's going on here
+                                    var fid = JSON.parse(JSON.parse(http.responseText));
+                                    e.target.id = fid['feed'];
+                                }
+                            }
+
+                            http.send(
+                                JSON.stringify({
+                                    subscription: e.target.id,
+                                })
+                            )
+                        }
+                        document.querySelectorAll('.subscribe_btn').forEach((btn) => {
+                                btn.addEventListener('click', e => {
+                                var buttonType = e.target.innerHTML;
+                                if (buttonType === "+") {
+                                    subscribe_feed(e);
+                                } else {
+                                    unsubscribe_feed(e);
+                                }
+                                })
+                            }   
+                        );
+                    </script>
 {% endblock %}
