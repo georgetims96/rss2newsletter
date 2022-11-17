@@ -53,6 +53,8 @@
                             http.onreadystatechange = function () {
                                 if (http.readyState == 4 && http.status == 201) {
                                    e.target.parentElement.parentElement.removeChild(e.target.parentElement); 
+                                   alert(e.target.parentNode.childNodes.length);
+                                   
                                 }
                             }
 
