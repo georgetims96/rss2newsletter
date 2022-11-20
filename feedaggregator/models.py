@@ -10,6 +10,7 @@ import html
 class Feed(models.Model):
   title = models.CharField(max_length=150, blank=True, null=True)
   url = models.URLField(max_length=150, blank=False, unique=True, verbose_name="URL")
+  category = models.CharField(blank=True, null=True, max_length=50)
   feed_encoding = models.CharField(max_length=150, blank=True, null=True)
   last_sent = models.DateTimeField(blank=True, null=True)
   subscribers = models.ManyToManyField(Subscriber, through='Subscription', related_name="subscriptions")
