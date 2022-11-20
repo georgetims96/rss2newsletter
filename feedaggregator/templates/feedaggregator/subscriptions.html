@@ -52,9 +52,13 @@
                             
                             http.onreadystatechange = function () {
                                 if (http.readyState == 4 && http.status == 201) {
-                                   e.target.parentElement.parentElement.removeChild(e.target.parentElement); 
-                                   alert(e.target.parentNode.childNodes.length);
-                                   
+                                   var triggerElement = e.target;
+                                   console.log(triggerElement.parentElement.parentElement.children.length - 1);
+                                   if (triggerElement.parentElement.parentElement.children.length - 1 == 0) {
+                                    triggerElement.parentElement.parentElement.innerHTML = "You have no subscriptions. Discover some!";
+                                   } else {
+                                    triggerElement.parentElement.parentElement.removeChild(e.target.parentElement); 
+                                   }
                                 }
                             }
 
