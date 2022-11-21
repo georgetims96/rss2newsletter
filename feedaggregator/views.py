@@ -1,7 +1,8 @@
 from ast import Sub
 from django.views import generic
-from django.db.models import F
+from django.db.models import F, QuerySet
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.http import HttpResponse
 from feedaggregator.forms import FeedForm
 from django.urls import reverse_lazy
 from feedaggregator.models import Feed, Subscription, Entry, Bookmark
@@ -17,13 +18,13 @@ class FeedFormView(LoginRequiredMixin, generic.CreateView):
   # FIXME why is lazy necessary?
   success_url = reverse_lazy('feedaggregator:discover_feeds')
 
-  def get(self, *args, **kwargs):
+  def get(self, *args, **kwargs) -> HttpResponse:
     # FIXME If we're doing this, maybe we don't need a LoginRequiredMixin
     if not self.request.user.is_superuser:
       return redirect(reverse_lazy('feedaggregator:discover_feeds'))
     return super(FeedFormView, self).get(*args, **kwargs)
 
-  def get_context_data(self, **kwargs):
+  def get_context_data(self, **kwargs) -> object:
     context = super().get_context_data(**kwargs)
     context['user_first_name'] = self.request.user.first_name
     return context
@@ -34,7 +35,7 @@ class FeedDiscoverView(LoginRequiredMixin, generic.ListView):
   queryset = Feed.objects.all()
   paginate_by = 6 
 
-  def get_context_data(self, **kwargs):
+  def get_context_data(self, **kwargs) -> object:
     context = super(FeedDiscoverView, self).get_context_data(**kwargs)
     context["user_subscriptions"] = self.request.user.subscriptions.all()
     return context
@@ -43,7 +44,7 @@ class FeedSubscriptionView(LoginRequiredMixin, generic.ListView):
   template_name = "feedaggregator/subscriptions.html"
   context_object_name = "subscriptions"
 
-  def get_queryset(self):
+  def get_queryset(self) -> QuerySet[Subscription]:
     return Subscription.objects.filter(user=self.request.user)
 
 class EntrySavedView(LoginRequiredMixin, generic.ListView):
@@ -51,7 +52,7 @@ class EntrySavedView(LoginRequiredMixin, generic.ListView):
   template_name = "feedaggregator/saved_entries.html"
   paginate_by = 10 
   
-  def get_queryset(self):
+  def get_queryset(self) -> QuerySet[Bookmark]:
     return Bookmark.objects.filter(subscriber=self.request.user)
 
 class EntryListView(LoginRequiredMixin, generic.ListView):
@@ -61,11 +62,11 @@ class EntryListView(LoginRequiredMixin, generic.ListView):
   ordering = ['-pk']
   paginate_by = 10 
 
-  def get_queryset(self):
+  def get_queryset(self) -> QuerySet[Entry]:
     queryset = Entry.objects.filter(feed__id=self.kwargs['feed_pk'])
     return queryset
 
-  def get_context_data(self, **kwargs):
+  def get_context_data(self, **kwargs) -> object:
     context = super().get_context_data(**kwargs)
     # FIXME non-existent feed guarding
     context['feed_title'] = Feed.objects.get(id=self.kwargs['feed_pk']).title
@@ -77,7 +78,7 @@ class EntryDetailView(LoginRequiredMixin, generic.DetailView):
   template_name = "feedaggregator/entry_detail.html"
   context_object_name = "entry"
 
-  def get_context_data(self, **kwargs):
+  def get_context_data(self, **kwargs) -> object:
     context = super().get_context_data(**kwargs)
     bm = Bookmark.objects.filter(subscriber=self.request.user, entry=context["entry"])
     context["user_did_bookmark"] = True if bm.count() else False
