@@ -4,7 +4,8 @@ from users.models import Subscriber
 import feedparser
 from datetime import datetime
 import pytz
-from time import mktime
+from time import mktime, struct_time
+from typing import List
 import html
 
 class Feed(models.Model):
@@ -23,12 +24,12 @@ class Feed(models.Model):
     # FIXME do we need to do it this way
     ordering = ['-num_subscribers']
   
-  def __str__(self):
+  def __str__(self) -> str:
     if self.title:
       return self.title
     return ""
   
-  def generate_entry(self, raw_entry):
+  def generate_entry(self, raw_entry: object) -> 'Entry':
     '''
     Create Entry object given raw entry from parsed feed
     '''
@@ -49,13 +50,13 @@ class Feed(models.Model):
       new_entry.author = raw_entry["author"]
     return new_entry
 
-  def st_to_dt(self, st):
+  def st_to_dt(self, st: struct_time) -> datetime:
     # Generate datetime object from passed time struct
     # FIXME tz=pytz.utc does not work for some reason
     rel_datetime = datetime.fromtimestamp(mktime(st), tz=pytz.utc)
     return datetime.fromtimestamp(mktime(st), tz=pytz.utc)
 
-  def filter_entries(self, entries_since_date):
+  def filter_entries(self, entries_since_date: datetime) -> List[object]:
     '''
     Return all of the feed's entries since specified date
 
@@ -110,7 +111,7 @@ class Subscription(models.Model):
   feed = models.ForeignKey(Feed, on_delete=models.CASCADE)
   date_subscribed = models.DateTimeField(auto_now_add=True)
 
-  def __str__(self):
+  def __str__(self) -> str:
     return self.feed.title
 
   class Meta:
@@ -124,5 +125,5 @@ class Bookmark(models.Model):
   class Meta:
     ordering = ['-saved_time']
   
-  def __str__(self):
+  def __str__(self) -> str:
     return f'{self.entry.title} - {self.subscriber.email}'
