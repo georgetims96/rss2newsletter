@@ -1,6 +1,7 @@
 from django import forms
 from django.core.exceptions import ValidationError
 from feedaggregator.models import Feed 
+from typing import Optional
 import feedparser
 
 class FeedForm(forms.ModelForm):
@@ -11,7 +12,7 @@ class FeedForm(forms.ModelForm):
       'url': forms.TextInput,
     }
   
-  def clean_url(self):
+  def clean_url(self) -> Optional[str]:
     '''
     Check that provided URL is a valid RSS feed
     '''
