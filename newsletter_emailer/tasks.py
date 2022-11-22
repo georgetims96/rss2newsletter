@@ -10,7 +10,7 @@ import pytz
 import sendgrid
 
 @shared_task
-def send_entries():
+def send_entries() -> None:
     # Get all Feeds
     feeds = Feed.objects.all()
     # Loop over each feed
