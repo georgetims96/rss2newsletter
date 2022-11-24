@@ -23,7 +23,7 @@
                                                 <ul class="list-group list-group-flush">
                                                 {% for bookmark in saved_entries %}
                                                 <li class="list-group-item d-flex justify-content-between align-items-center">
-                                                <a href="{% url 'feedaggregator:entry_detail' pk=bookmark.entry.pk %}">{{ bookmark.entry.title }}</a><span class="badge-danger badge-pill unbookmark_btn" id="{{ bookmark.id }}">-</span>
+                                                <a href="{% url 'feedaggregator:entry_detail' pk=bookmark.entry.pk %}">{{ bookmark.entry.title }}</a><span class="badge-danger badge-pill unbookmark_btn" id="{{ bookmark.pk }}|{{bookmark.entry.pk}}">-</span>
                                                 </li>
                                                 {% endfor %}
                                                 </ul>
@@ -38,4 +38,45 @@
                             </div>
                         </div>
                     </div>
+<script>
+
+                        function unbookmark_entry(e) {
+                            var http = new XMLHttpRequest();
+                            var triggerElement = e.target;
+                            var [bookmark_id, entry_id] = triggerElement.id.split("|");
+                            // FIXME figure out how to do this with URL tag
+                            var url = '/api/bookmarks/' + bookmark_id + '/';
+                            var method = "DELETE";
+                            
+                            http.open(method, url, true);
+
+                            http.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
+                            http.setRequestHeader('X-CSRFToken', '{{ csrf_token }}');
+                            
+                            http.onreadystatechange = function () {
+                                if (http.readyState == 4 && http.status == 201) {
+                                   console.log(triggerElement.parentElement.parentElement.children.length - 1);
+                                   if (triggerElement.parentElement.parentElement.children.length - 1 == 0) {
+                                    triggerElement.parentElement.parentElement.innerHTML = "You have no bookmarks!";
+                                   } else {
+                                    triggerElement.parentElement.parentElement.removeChild(e.target.parentElement); 
+                                   }
+                                }
+                            }
+
+                            http.send(
+                                JSON.stringify({
+                                    entry: entry_id,
+                                    subscriber: {{ request.user.id }}
+                                })
+                            )
+                        }
+
+                        document.querySelectorAll('.unbookmark_btn').forEach((btn) => {
+                                btn.addEventListener('click', e => {
+                                    unbookmark_entry(e);
+                                });
+                            }   
+                        );
+                    </script>
 {% endblock %}
