@@ -8,9 +8,14 @@ from time import mktime, struct_time
 from typing import List
 import html
 
+
+class Category(models.Model):
+  title = models.CharField(max_length=50, null=False)
+
 class Feed(models.Model):
   title = models.CharField(max_length=150, blank=True, null=True)
   url = models.URLField(max_length=150, blank=False, unique=True, verbose_name="URL")
+  category = models.ManyToManyField(Category, related_name='feeds')
   feed_encoding = models.CharField(max_length=150, blank=True, null=True)
   last_sent = models.DateTimeField(blank=True, null=True)
   subscribers = models.ManyToManyField(Subscriber, through='Subscription', related_name="subscriptions")
@@ -92,8 +97,7 @@ class Feed(models.Model):
           self.sorted_normal = True
     super(Feed, self).save(*args, **kwargs)
   
-class Category(models.Model):
-  title = models.CharField(max_length=50, null=False)
+
 
 class Entry(models.Model):
   feed = models.ForeignKey(Feed, on_delete=models.CASCADE)
