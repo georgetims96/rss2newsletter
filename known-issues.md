@@ -9,4 +9,5 @@
 - Bootstrap formatting probably not optimized
 - Seems that cron jobs are running excessively - FIX!!
 - Caching issue with AJAX buttons when you go back in history
-- DOM traversal not working as expected
+-~DOM traversal not working as expected~
+- Not working on M2, probably API key issue
