@@ -3,7 +3,7 @@
 - ~Pagination is not working for entries given the filter~
 - Some posts do not have timestamps. This currently breaks the model's save override.
 - Need to add entries in correct order when timestamp is not provided
-- Need to add correct ordering for a ListView
+- ~Need to add correct ordering for a ListView~
 - ~Bug where if you add subscription in new window you can also add it in the main window. Result is two subscriptions.~
 - ~Bug with hitting 'back' for any view that incorporates RedirectView hack~
 - Bootstrap formatting probably not optimized
