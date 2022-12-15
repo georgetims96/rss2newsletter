@@ -23,12 +23,12 @@ class LoginView(auth_views.LoginView):
   redirect_authenticated_user = True
 
 class GuestLoginRedirectView(RedirectView):
-  pattern_name = 'feedaggregate:discover'
+  pattern_name = 'feedaggregator:discover_feeds'
 
   def get_redirect_url(self, *args, **kwargs):
-    guest_user = authenticate(email="guest@gmail.com", password="guest_password")
+    guest_user = authenticate(self.request, email="guest@gmail.com", password="Guestpassword123*")
     login(self.request, guest_user)
-    return super(self, GuestLoginRedirectView).get_redirect_url(*args, **kwargs)
+    return super().get_redirect_url(*args, **kwargs)
 
 class LogoutView(auth_views.LogoutView):
   template_name = 'users/logout.html'
