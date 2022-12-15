@@ -2,10 +2,23 @@
 {% block title %}Login{% endblock %}
 {% load crispy_forms_tags %}
 {% block content %}
+<div class="row">
+  <div class="col">
 <h1>Login</h1>
+</div>
+</div>
+<div class="row">
+<div class="col">
 <form method="POST">
   {% csrf_token %}
   {{ form|crispy }}
   <button type="submit" class="btn btn-primary">Login</button>
 </form>
+</div>
+</div>
+<div class="row">
+  <div class="col">
+  <div class="text-small">Guest (or recruiter)? Click <a href="{% url 'users:guest_login' %}">here.</a></div>
+</div>
+</div>
 {% endblock %}
