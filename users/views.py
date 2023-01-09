@@ -23,7 +23,7 @@ class LoginView(auth_views.LoginView):
   redirect_authenticated_user = True
 
 class NewLoginView(auth_views.LoginView):
-  template_name = 'users/new_login.html'
+  template_name = 'users/login_new.html'
   redirect_authenticated_user = True
 
 class GuestLoginRedirectView(RedirectView):
