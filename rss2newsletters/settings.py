@@ -150,13 +150,11 @@ LOGIN_REDIRECT_URL = reverse_lazy('feedaggregator:add_feed')
 LOGIN_URL = reverse_lazy('users:login')
 
 # Email Settings
-'''
 EMAIL_USE_TLS = es.EMAIL_USE_TLS
 EMAIL_HOST = es.EMAIL_HOST
 EMAIL_PORT = es.EMAIL_PORT
 EMAIL_HOST_USER = es.EMAIL_HOST_USER
 EMAIL_HOST_PASSWORD = es.EMAIL_HOST_PASSWORD
-'''
 
 CELERY_BROKER_URL = os.environ.get("CELERY_BROKER", "redis://redis:6379/0")
 CELERY_RESULT_BACKEND = os.environ.get("CELERY_BROKER", "redis://redis:6379/0")
