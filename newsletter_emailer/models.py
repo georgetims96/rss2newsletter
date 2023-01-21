@@ -3,7 +3,7 @@ from django.shortcuts import render
 from rss2newsletters.settings import BASE_DIR
 from feedaggregator.models import Entry
 from django.template.loader import render_to_string
-#from newsletter_emailer.email_settings import SENDGRID_API_KEY, FROM_EMAIL
+from newsletter_emailer.email_settings import SENDGRID_API_KEY, FROM_EMAIL
 from datetime import datetime
 from typing import List
 import sendgrid
