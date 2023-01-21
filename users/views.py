@@ -29,6 +29,3 @@ class GuestLoginRedirectView(RedirectView):
     guest_user = authenticate(self.request, email="guest@gmail.com", password="Guestpassword123*")
     login(self.request, guest_user)
     return super().get_redirect_url(*args, **kwargs)
-
-class LogoutView(auth_views.LogoutView):
-  template_name = 'users/logout.html'
