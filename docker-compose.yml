@@ -5,10 +5,8 @@ services:
     image: postgres
     volumes:
       - ./data/db:/var/lib/postgresql/data
-    environment:
-      - POSTGRES_DB=postgres
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
+    env_file:
+      - ./.env.dev
   web:
     build: .
     container_name: rss2newsletters_django
@@ -17,12 +15,8 @@ services:
       - .:/src 
     ports:
       - "8000:8000"
-    environment:
-      - POSTGRES_NAME=postgres
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
-      - CELERY_BROKER=redis://redis:6379/0
-      - CELERY_BACKEND=redis://redis:6379/0
+    env_file:
+      - ./.env.dev
     depends_on:
       - db
       - redis
@@ -31,10 +25,8 @@ services:
     command: celery -A rss2newsletters worker -l INFO --pool=solo 
     volumes:
       - .:/src
-    environment:
-      - POSTGRES_NAME=postgres
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
+    env_file:
+      - ./.env.dev
     depends_on:
       - web
       - redis
@@ -43,6 +35,8 @@ services:
     command: celery -A rss2newsletters beat -l INFO
     volumes:
       - .:/src
+    env_file:
+      - ./.env.dev
     depends_on:
       - web
       - redis

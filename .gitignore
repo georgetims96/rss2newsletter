@@ -2,5 +2,5 @@
 data/
 *.swp
 newsletter_emailer/email_settings.py
-celerybeat-schedule
+./celerybeat-schedule
 pseudo_emails/
