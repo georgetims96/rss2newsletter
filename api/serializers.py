@@ -3,6 +3,11 @@ from feedaggregator.models import Bookmark, Entry, Feed, Subscription
 from users.models import Subscriber
 from datetime import datetime, timezone
 
+class EntrySerializer(serializer.ModelSerializer):
+    class Meta:
+        model = Entry
+        fields = ['author', 'title', 'published_date', 'body']
+
 class BookmarkSerializer(serializers.ModelSerializer):
     entry = serializers.PrimaryKeyRelatedField(many=False, queryset=Entry.objects.all())
     subscriber = serializers.PrimaryKeyRelatedField(many=False, queryset=Subscriber.objects.all())
