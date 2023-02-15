@@ -8,6 +8,11 @@ class EntrySerializer(serializer.ModelSerializer):
         model = Entry
         fields = ['author', 'title', 'published_date', 'body']
 
+class FeedSerializer(serializer.ModelSerializer):
+    class Meta:
+        model = Feed
+        fields = ['title', 'url']
+
 class BookmarkSerializer(serializers.ModelSerializer):
     entry = serializers.PrimaryKeyRelatedField(many=False, queryset=Entry.objects.all())
     subscriber = serializers.PrimaryKeyRelatedField(many=False, queryset=Subscriber.objects.all())
